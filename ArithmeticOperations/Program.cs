@@ -8,12 +8,20 @@ namespace arithmetic
         int firstNumberToAdd = int.Parse(Console.ReadLine());
         int secondNumberToAdd = int.Parse(Console.ReadLine());
         Console.WriteLine(AddNumbers(firstNumberToAdd, secondNumberToAdd));
-       }
+        Console.WriteLine(MultiplyNumbers(firstNumberToAdd, secondNumberToAdd));
+        }
 
        static int AddNumbers(int firstNumber, int secondNumber)
        { 
         int result;
         result = firstNumber + secondNumber;
+        return result;
+       }
+
+       static int MultiplyNumbers(int firstNumber, int secondNumber)
+       {
+        int result;
+        result = firstNumber * secondNumber;
         return result;
        }
     }
