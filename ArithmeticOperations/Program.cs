@@ -1,14 +1,21 @@
-﻿static void Main()
+﻿using System;
+namespace arithmetic
 {
-    int firstNumberToAdd = int.Parse(Console.ReadLine());
-    int secondNumberToAdd = int.Parse(Console.ReadLine());
-    Console.WriteLine(AddNumbers(firstNumberToAdd, secondNumberToAdd));
-}
+    class Program
+    {
+       static void Main()
+       {
+        int firstNumberToAdd = int.Parse(Console.ReadLine());
+        int secondNumberToAdd = int.Parse(Console.ReadLine());
+        Console.WriteLine(AddNumbers(firstNumberToAdd, secondNumberToAdd));
+       }
 
-static int AddNumbers(int firstNumber, int secondNumber)
-{
-    int result;
-    result = firstNumber + secondNumber;
-    return result;
+       static int AddNumbers(int firstNumber, int secondNumber)
+       { 
+        int result;
+        result = firstNumber + secondNumber;
+        return result;
+       }
+    }
 }
 
