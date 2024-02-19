@@ -5,10 +5,10 @@ namespace arithmetic
     {
       public static void Main()
        {
-        int first = int.Parse(Console.ReadLine());
+        int firstNumberToAdd = int.Parse(Console.ReadLine());
         int secondNumberToAdd = int.Parse(Console.ReadLine());
-        Console.WriteLine(AddNumbers(first, secondNumberToAdd));
-        Console.WriteLine(MultiplyNumbers(first, secondNumberToAdd));
+        Console.WriteLine(AddNumbers(firstNumberToAdd, secondNumberToAdd));
+        Console.WriteLine(MultiplyNumbers(firstNumberToAdd, secondNumberToAdd));
         }
 
       public static int AddNumbers(int firstNumber, int secondNumber)
