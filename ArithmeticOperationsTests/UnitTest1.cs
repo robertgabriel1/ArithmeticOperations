@@ -9,7 +9,7 @@ namespace ArithmeticOperationsTests
         {
             int firstNumber = 3;
             int secondNumber = 4;
-            int expectedSum = 8;
+            int expectedSum = 7;
             int result = Program.AddNumbers(firstNumber, secondNumber);
             Assert.Equal(expectedSum, result);
         }
