@@ -19,9 +19,9 @@ namespace ArithmeticOperationsTests
         {
             int firstNumber = 3;
             int secondNumber = 4;
-            int expected = 12;
+            int expectedProduct = 12;
             int result = Program.MultiplyNumbers(firstNumber, secondNumber);
-            Assert.Equal(expected, result);
+            Assert.Equal(expectedProduct, result);
         }
     }
 }
