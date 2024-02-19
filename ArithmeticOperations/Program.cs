@@ -13,16 +13,12 @@ namespace arithmetic
 
       public static int AddNumbers(int firstNumber, int secondNumber)
        { 
-        int result;
-        result = firstNumber + secondNumber;
-        return result;
+        return firstNumber + secondNumber;
        }
 
        public static int MultiplyNumbers(int firstNumber, int secondNumber)
        {
-        int result;
-        result = firstNumber * secondNumber;
-        return result;
+        return firstNumber * secondNumber;
        }
     }
 }
