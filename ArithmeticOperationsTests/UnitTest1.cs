@@ -15,7 +15,7 @@ namespace ArithmeticOperationsTests
         }
 
         [Fact]
-        public void MultiplyNumbers_ReturnCorrectResult()
+        public void MultiplyNumbers_ReturnCorrectProduct()
         {
             int firstNumber = 3;
             int secondNumber = 4;
