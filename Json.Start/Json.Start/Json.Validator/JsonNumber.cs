@@ -6,12 +6,7 @@ namespace Json
     {
         public static bool IsJsonNumber(string input)
         {
-            if (input == null)
-            {
-                return false;
-            }
-
-            if (input == "")
+            if (string.IsNullOrEmpty(input))
             {
                 return false;
             }
@@ -39,6 +34,11 @@ namespace Json
                 {
                     result = true;
                 }
+            }
+
+            if (input.Length > 1 && input[0] == '0')
+            {
+                return false;
             }
 
             return result;
