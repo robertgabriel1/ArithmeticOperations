@@ -12,6 +12,15 @@ namespace Json
                 result = true;
             }
 
+            foreach (char c in input)
+            {
+                if (char.IsLetter(c))
+                {
+                    result = false;
+                    break;
+                }
+            }
+
             return result;
         }
     }
