@@ -6,6 +6,11 @@ namespace Json
     {
         public static bool IsJsonNumber(string input)
         {
+            if (string.IsNullOrEmpty(input))
+            {
+                return false;
+            }
+
             bool result = false;
             if (input == "0")
             {
@@ -19,14 +24,16 @@ namespace Json
                     result = false;
                     break;
                 }
+
+                result = true;
             }
 
             for (int i = 0; i < input.Length; i++)
             {
-            if (input[i] >= '0' && input[i] <= '9')
-            {
-                result = true;
-            }
+                if (input[i] >= '0' && input[i] <= '9')
+                {
+                    result = true;
+                }
             }
 
             return result;
