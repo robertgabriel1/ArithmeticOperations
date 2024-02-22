@@ -21,6 +21,11 @@ namespace Json
                 }
             }
 
+            if (input.Length == 1 && input[0] >= '0' && input[0] <= '9')
+            {
+                result = true;
+            }
+
             return result;
         }
     }
