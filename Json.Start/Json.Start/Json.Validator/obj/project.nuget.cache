@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8n0kNo18QfzbTa4zzrN3C9HsbV+1MARrrW8+WmbSUdAu/c8RuXp0QvF+t+Q2rVw52151VpuMJ9EhSniNLvb2Ow==",
+  "dgSpecHash": "nKVtDgONzfX6WNjQqCWDvyHuCH99C8NjVtPfA7M4GE0v4jOK2h6I8VvTDz/IhR84cFs/cQyLc1aJmMgKxizw2Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\RRG\\Desktop\\Json.Start\\Json.Start\\Json.Validator\\Json.csproj",
+  "projectFilePath": "D:\\bgm\\arithmetic\\Json.Start\\Json.Start\\Json.Validator\\Json.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\RRG\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.3.3\\microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",
     "C:\\Users\\RRG\\.nuget\\packages\\microsoft.codeanalysis.common\\4.3.1\\microsoft.codeanalysis.common.4.3.1.nupkg.sha512",
