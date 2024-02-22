@@ -21,9 +21,12 @@ namespace Json
                 }
             }
 
-            if (input.Length == 1 && input[0] >= '0' && input[0] <= '9')
+            for (int i = 0; i < input.Length; i++)
+            {
+            if (input[i] >= '0' && input[i] <= '9')
             {
                 result = true;
+            }
             }
 
             return result;
