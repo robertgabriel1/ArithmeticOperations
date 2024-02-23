@@ -11,7 +11,9 @@ namespace Json
 
         static bool ContainsValidDigits(string input)
         {
-            return CanContainOneOrMultipleDigits(input) && FirstDigitIsNotZero(input);
+            bool isNegative = input[0] == '-';
+            string number = isNegative ? input.Substring(1) : input;
+            return CanContainOneOrMultipleDigits(number) && FirstDigitIsNotZero(number);
         }
 
         static bool CanContainOneOrMultipleDigits(string input)
@@ -31,16 +33,7 @@ namespace Json
 
         static bool FirstDigitIsNotZero(string input)
         {
-            if (input.Length < 1)
-            {
-                return true;
-            }
-            else if (input.Length > 1 && input[0] == '0')
-            {
-                return false;
-            }
-
-            return true;
+            return input.Length <= 1 || input[0] != '0';
         }
 
         static bool ContainsLetters(string input)
