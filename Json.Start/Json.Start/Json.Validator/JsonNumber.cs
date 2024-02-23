@@ -22,7 +22,7 @@ namespace Json
             int index = 0;
             foreach (char c in input)
             {
-                if (c == '.' && index != 0)
+                if (c == '.' && index != 0 && index != input.Length - 1)
                 {
                     result = true;
                     break;
@@ -41,7 +41,13 @@ namespace Json
 
         static bool FirstDigitIsNotZero(string input)
         {
-            return input.Length <= 1 || input[0] != '0' || input[1] == '.';
+            if (input.Length <= 1)
+            {
+                return true;
+            }
+
+            char lastChar = input[input.Length - 1];
+            return input[0] != '0' || input[1] == '.';
         }
     }
 }
