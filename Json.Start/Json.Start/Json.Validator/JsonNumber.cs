@@ -6,42 +6,54 @@ namespace Json
     {
         public static bool IsJsonNumber(string input)
         {
-            if (string.IsNullOrEmpty(input))
-            {
-                return false;
-            }
+            return !string.IsNullOrEmpty(input) && ContainsValidDigits(input) && ContainsLetters(input);
+        }
 
-            bool result = false;
-            if (input == "0")
-            {
-                result = true;
-            }
+        static bool ContainsValidDigits(string input)
+        {
+            return CanContainOneOrMultipleDigits(input) && FirstDigitIsNotZero(input);
+        }
 
-            foreach (char c in input)
+        static bool CanContainOneOrMultipleDigits(string input)
+        {
+            bool result = true;
+            for (int i = 0; i < input.Length; i++)
             {
-                if (char.IsLetter(c))
+                if (!(input[i] >= '0' && input[i] <= '9'))
                 {
                     result = false;
                     break;
                 }
-
-                result = true;
             }
 
-            for (int i = 0; i < input.Length; i++)
+            return result;
+        }
+
+        static bool FirstDigitIsNotZero(string input)
+        {
+            if (input.Length < 1)
             {
-                if (input[i] >= '0' && input[i] <= '9')
-                {
-                    result = true;
-                }
+                return true;
             }
-
-            if (input.Length > 1 && input[0] == '0')
+            else if (input.Length > 1 && input[0] == '0')
             {
                 return false;
             }
 
-            return result;
+            return true;
+        }
+
+        static bool ContainsLetters(string input)
+        {
+            foreach (char c in input)
+            {
+                if (char.IsLetter(c))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
