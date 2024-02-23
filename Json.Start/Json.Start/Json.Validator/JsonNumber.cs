@@ -6,7 +6,7 @@ namespace Json
     {
         public static bool IsJsonNumber(string input)
         {
-            return !string.IsNullOrEmpty(input) && ContainsValidDigits(input) && ContainsLetters(input);
+            return !string.IsNullOrEmpty(input) && ContainsValidDigits(input);
         }
 
         static bool ContainsValidDigits(string input)
@@ -19,13 +19,21 @@ namespace Json
         static bool CanContainOneOrMultipleDigits(string input)
         {
             bool result = true;
-            for (int i = 0; i < input.Length; i++)
+            int index = 0;
+            foreach (char c in input)
             {
-                if (!(input[i] >= '0' && input[i] <= '9'))
+                if (c == '.' && index != 0)
+                {
+                    result = true;
+                    break;
+                }
+                else if (!(c >= '0' && c <= '9'))
                 {
                     result = false;
                     break;
                 }
+
+                index++;
             }
 
             return result;
@@ -34,19 +42,6 @@ namespace Json
         static bool FirstDigitIsNotZero(string input)
         {
             return input.Length <= 1 || input[0] != '0';
-        }
-
-        static bool ContainsLetters(string input)
-        {
-            foreach (char c in input)
-            {
-                if (char.IsLetter(c))
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }
