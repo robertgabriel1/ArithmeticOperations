@@ -20,20 +20,25 @@ namespace Json
         {
             bool result = true;
             int index = 0;
+            int countDots = 0;
             foreach (char c in input)
             {
                 if (c == '.' && index != 0 && index != input.Length - 1)
                 {
                     result = true;
-                    break;
+                    countDots++;
                 }
-                else if (!(c >= '0' && c <= '9'))
+                else if (!(c >= '0' && c <= '9' && c != '.'))
                 {
                     result = false;
-                    break;
                 }
 
                 index++;
+            }
+
+            if (countDots > 1)
+            {
+                return false;
             }
 
             return result;
