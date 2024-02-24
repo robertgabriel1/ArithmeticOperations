@@ -21,14 +21,22 @@ namespace Json
             bool result = true;
             int index = 0;
             int countDots = 0;
+            int countExponent = 0;
             foreach (char c in input)
             {
-                if (c == '.' && index != 0 && index != input.Length - 1)
+                if (IsValidDotOrExponent(input, c, index))
                 {
                     result = true;
-                    countDots++;
+                    if (c == '.')
+                    {
+                        countDots++;
+                    }
+                    else
+                    {
+                        countExponent++;
+                    }
                 }
-                else if (!(c >= '0' && c <= '9' && c != '.'))
+                else if (!(IsDigit(c) && c != '.'))
                 {
                     result = false;
                 }
@@ -36,12 +44,32 @@ namespace Json
                 index++;
             }
 
-            if (countDots > 1)
+            if (countDots > 1 || countExponent > 1)
             {
                 return false;
             }
 
             return result;
+        }
+
+        static bool IsExponent(char c)
+        {
+            return c == 'e' || c == 'E';
+        }
+
+        static bool IsNotFirstOrLastIndex(string input, int index)
+        {
+            return index != 0 && index != input.Length - 1;
+        }
+
+        static bool IsDigit(char c)
+        {
+            return c >= '0' && c <= '9';
+        }
+
+        static bool IsValidDotOrExponent(string input, char c, int index)
+        {
+            return (c == '.' || IsExponent(c)) && IsNotFirstOrLastIndex(input, index);
         }
 
         static bool FirstDigitIsNotZero(string input)
