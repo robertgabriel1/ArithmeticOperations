@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 
 namespace Json
 {
@@ -19,26 +20,19 @@ namespace Json
         static bool ContainsValidCharacters(string input)
         {
             int index = 0;
-            int countDots = 0;
-            int countExponent = 0;
+            int countDots = CountDotsOrExponents(input, '.');
+            int countExponent = CountDotsOrExponents(input, 'e') + CountDotsOrExponents(input, 'E');
             foreach (char c in input)
             {
-                if ((c == '.' || IsExponent(c)) && IsValidDotOrExponent(input, c, index))
+                if (IsValidDotOrExponent(input, c, index))
                 {
-                    if (c == '.')
-                    {
-                        countDots++;
-                    }
-                    else
-                    {
-                        countExponent++;
-                    }
+                    return false;
                 }
-                else if (IsPlusOrMinus(c) && IsExponent(input[index - 1]))
+                else if (IsPositiveOrNegativeExponent(input, c, index))
                 {
                     return true;
                 }
-                else if (!IsDigit(c) && !IsExponent(c))
+                else if (!IsDigit(c) && !IsExponent(c) && c != '.')
                 {
                     return false;
                 }
@@ -49,9 +43,33 @@ namespace Json
             return countDots <= 1 && countExponent <= 1;
         }
 
-        static bool IsPlusOrMinus(char c)
+        static int CountDotsOrExponents(string input, char targetCharacter)
         {
-            return c == '+' || c == '-';
+            int count = 0;
+            foreach (char c in input)
+            {
+                if (c == targetCharacter)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        static bool IsPositiveOrNegativeExponent(string input, char c, int index)
+        {
+            return IsPlusOrMinus(c, input, index) && IsExponent(input[index - 1]) && IsNotFirstOrLastIndex(input, index);
+        }
+
+        static bool IsValidDotOrExponent(string input, char c, int index)
+        {
+            return (c == '.' || IsExponent(c)) && !IsNotFirstOrLastIndex(input, index);
+        }
+
+        static bool IsPlusOrMinus(char c, string input, int index)
+        {
+            return c == '+' || c == '-' && IsNotFirstOrLastIndex(input, index);
         }
 
         static bool IsExponent(char c)
@@ -67,11 +85,6 @@ namespace Json
         static bool IsDigit(char c)
         {
             return c >= '0' && c <= '9';
-        }
-
-        static bool IsValidDotOrExponent(string input, char c, int index)
-        {
-            return (c == '.' || IsExponent(c)) && IsNotFirstOrLastIndex(input, index);
         }
 
         static bool FirstDigitIsNotZero(string input)
