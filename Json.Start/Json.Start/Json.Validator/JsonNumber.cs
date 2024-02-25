@@ -6,27 +6,25 @@ namespace Json
     {
         public static bool IsJsonNumber(string input)
         {
-            return !string.IsNullOrEmpty(input) && ContainsValidDigits(input);
+            return !string.IsNullOrEmpty(input) && CanBeNegative(input);
         }
 
-        static bool ContainsValidDigits(string input)
+        static bool CanBeNegative(string input)
         {
             bool isNegative = input[0] == '-';
             string number = isNegative ? input.Substring(1) : input;
-            return CanContainOneOrMultipleDigits(number) && FirstDigitIsNotZero(number);
+            return ContainsValidCharacters(number) && FirstDigitIsNotZero(number);
         }
 
-        static bool CanContainOneOrMultipleDigits(string input)
+        static bool ContainsValidCharacters(string input)
         {
-            bool result = true;
             int index = 0;
             int countDots = 0;
             int countExponent = 0;
             foreach (char c in input)
             {
-                if (IsValidDotOrExponent(input, c, index))
+                if ((c == '.' || IsExponent(c)) && IsValidDotOrExponent(input, c, index))
                 {
-                    result = true;
                     if (c == '.')
                     {
                         countDots++;
@@ -36,20 +34,24 @@ namespace Json
                         countExponent++;
                     }
                 }
-                else if (!(IsDigit(c) && c != '.'))
+                else if (IsPlusOrMinus(c) && IsExponent(input[index - 1]))
                 {
-                    result = false;
+                    return true;
+                }
+                else if (!IsDigit(c) && !IsExponent(c))
+                {
+                    return false;
                 }
 
                 index++;
             }
 
-            if (countDots > 1 || countExponent > 1)
-            {
-                return false;
-            }
+            return countDots <= 1 && countExponent <= 1;
+        }
 
-            return result;
+        static bool IsPlusOrMinus(char c)
+        {
+            return c == '+' || c == '-';
         }
 
         static bool IsExponent(char c)
