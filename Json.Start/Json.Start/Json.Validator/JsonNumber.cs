@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 
 namespace Json
 {
@@ -7,11 +6,11 @@ namespace Json
     {
         public static bool IsJsonNumber(string input)
         {
-            return !string.IsNullOrEmpty(input) && CanBeNegative(input);
-        }
+            if (string.IsNullOrEmpty(input))
+            {
+                return false;
+            }
 
-        static bool CanBeNegative(string input)
-        {
             bool isNegative = input[0] == '-';
             string number = isNegative ? input.Substring(1) : input;
             return ContainsValidCharacters(number) && FirstDigitIsNotZero(number);
@@ -19,16 +18,18 @@ namespace Json
 
         static bool ContainsValidCharacters(string input)
         {
-            int index = 0;
+            int currentIndex = 0;
+            int indexDot = 0;
+            int indexExponent = 0;
             int countDots = CountDotsOrExponents(input, '.');
-            int countExponent = CountDotsOrExponents(input, 'e') + CountDotsOrExponents(input, 'E');
+            int countExponents = CountDotsOrExponents(input, 'e') + CountDotsOrExponents(input, 'E');
             foreach (char c in input)
             {
-                if (IsValidDotOrExponent(input, c, index))
+                if (IsNotValidDotOrExponent(input, c, currentIndex))
                 {
                     return false;
                 }
-                else if (IsPositiveOrNegativeExponent(input, c, index))
+                else if (IsPositiveOrNegativeExponent(input, c, currentIndex))
                 {
                     return true;
                 }
@@ -37,10 +38,33 @@ namespace Json
                     return false;
                 }
 
-                index++;
+                UpdateIndicesForDotAndExponent(c, ref indexDot, ref indexExponent, currentIndex);
+                currentIndex++;
             }
 
-            return countDots <= 1 && countExponent <= 1;
+            if (IsFractionBeforeExponent(countDots, countExponents, indexDot, indexExponent))
+            {
+                return false;
+            }
+
+            return countDots <= 1 && countExponents <= 1;
+        }
+
+        static void UpdateIndicesForDotAndExponent(char c, ref int indexDot, ref int indexExponent, int currentIndex)
+        {
+            if (c == '.')
+            {
+                indexDot = currentIndex;
+            }
+            else if (IsExponent(c))
+            {
+                indexExponent = currentIndex;
+            }
+        }
+
+        static bool IsFractionBeforeExponent(int countDots, int countExponents, int indexDot, int indexExponent)
+        {
+           return countDots == 1 && countExponents == 1 && indexDot > indexExponent;
         }
 
         static int CountDotsOrExponents(string input, char targetCharacter)
@@ -62,7 +86,7 @@ namespace Json
             return IsPlusOrMinus(c, input, index) && IsExponent(input[index - 1]) && IsNotFirstOrLastIndex(input, index);
         }
 
-        static bool IsValidDotOrExponent(string input, char c, int index)
+        static bool IsNotValidDotOrExponent(string input, char c, int index)
         {
             return (c == '.' || IsExponent(c)) && !IsNotFirstOrLastIndex(input, index);
         }
@@ -94,7 +118,6 @@ namespace Json
                 return true;
             }
 
-            char lastChar = input[input.Length - 1];
             return input[0] != '0' || input[1] == '.';
         }
     }
