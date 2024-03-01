@@ -6,7 +6,7 @@ namespace Json
     {
         public static bool IsJsonString(string input)
         {
-            bool result;
+            const bool result = true;
             if (string.IsNullOrEmpty(input))
             {
                 return false;
@@ -14,20 +14,34 @@ namespace Json
 
             foreach (char c in input)
             {
-                if (IsControlCharacter(c))
+                if (IsControlCharacter(c) && !ContainsAtSymbol(input))
                 {
                     return false;
                 }
             }
 
-            result = (input[0] == '"') && (input[input.Length - 1] == '"');
+            if (!StartsAndEndsWithDoubleQuote(input))
+            {
+                return false;
+            }
 
             return result;
         }
 
+        static bool StartsAndEndsWithDoubleQuote(string input)
+        {
+            return (input[0] == '"') && (input[input.Length - 1] == '"');
+        }
+
+        static bool ContainsAtSymbol(string input)
+        {
+            return input.StartsWith("@");
+        }
+
         static bool IsControlCharacter(char c)
         {
-            return c == '\n' || c == '\r';
+        const int lastControlCharacter = 32;
+        return c < lastControlCharacter;
         }
     }
 }
