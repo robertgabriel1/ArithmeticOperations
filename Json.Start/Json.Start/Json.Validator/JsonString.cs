@@ -18,12 +18,9 @@ namespace Json
 
             for (int i = 0; i < input.Length; i++)
             {
-                if (input[i] == '\\')
+                if (input[i] == '\\' && !AfterBackslash(input[i + 1], input))
                 {
-                    if (!AfterBackslash(input[i + 1], input))
-                    {
-                        return false;
-                    }
+                    return false;
                 }
                 else if (IsControlCharacter(input[i]))
                 {
@@ -41,7 +38,14 @@ namespace Json
 
         static bool AfterBackslash(char nextChar, string input)
         {
-            return nextChar == '"';
+            switch (nextChar)
+            {
+                case '"':
+                case '/':
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         static bool IsControlCharacter(char c)
