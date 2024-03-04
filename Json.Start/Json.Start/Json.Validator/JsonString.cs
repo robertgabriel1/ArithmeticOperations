@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Json
 {
@@ -6,18 +6,9 @@ namespace Json
     {
         public static bool IsJsonString(string input)
         {
-            const bool result = true;
             if (string.IsNullOrEmpty(input))
             {
                 return false;
-            }
-
-            foreach (char c in input)
-            {
-                if (IsControlCharacter(c) && !ContainsAtSymbol(input))
-                {
-                    return false;
-                }
             }
 
             if (!StartsAndEndsWithDoubleQuote(input))
@@ -25,7 +16,22 @@ namespace Json
                 return false;
             }
 
-            return result;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == '\\')
+                {
+                    if (!AfterBackslash(input[i + 1], input))
+                    {
+                        return false;
+                    }
+                }
+                else if (IsControlCharacter(input[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         static bool StartsAndEndsWithDoubleQuote(string input)
@@ -33,9 +39,9 @@ namespace Json
             return (input[0] == '"') && (input[input.Length - 1] == '"');
         }
 
-        static bool ContainsAtSymbol(string input)
+        static bool AfterBackslash(char nextChar, string input)
         {
-            return input.StartsWith("@");
+            return nextChar == '"';
         }
 
         static bool IsControlCharacter(char c)
