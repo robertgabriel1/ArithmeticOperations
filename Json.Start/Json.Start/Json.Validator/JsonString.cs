@@ -43,6 +43,7 @@ namespace Json
                 case '"':
                 case '/':
                 case 'b':
+                case 'f':
                     return true;
                 default:
                     return false;
