@@ -44,6 +44,9 @@ namespace Json
                 case '/':
                 case 'b':
                 case 'f':
+                case 'n':
+                case 'r':
+                case 't':
                     return true;
                 default:
                     return false;
