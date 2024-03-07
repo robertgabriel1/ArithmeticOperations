@@ -11,6 +11,7 @@ namespace Json
                 return false;
             }
 
+            input = input.Trim();
             bool isNegative = input[0] == '-';
             string number = isNegative ? input.Substring(1) : input;
             return ContainsValidCharacters(number) && FirstDigitIsNotZero(number);

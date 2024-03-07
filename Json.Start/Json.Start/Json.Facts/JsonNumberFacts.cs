@@ -152,5 +152,20 @@ namespace Json.Facts
         {
             Assert.True(IsJsonNumber("[1, 2, 3]"));
         }
+
+        [Fact]
+        public void CanContainLeadingAndTrailingWhitespaces()
+        {
+            Assert.True(IsJsonNumber(" [1, 2, 3] "));
+        }
+
+        [Fact]
+        public void CEva()
+        {
+            Assert.False(IsJsonNumber("+"));
+            Assert.False(IsJsonNumber("-"));
+            Assert.False(IsJsonNumber("e"));
+            Assert.False(IsJsonNumber("e"));
+        }
     }
 }
