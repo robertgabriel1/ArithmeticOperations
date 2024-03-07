@@ -11,8 +11,13 @@ namespace Json
                 return false;
             }
 
+            bool isNegative = false;
             input = input.Trim();
-            bool isNegative = input[0] == '-';
+            if (input.Length > 1)
+            {
+                isNegative = input[0] == '-';
+            }
+
             string number = isNegative ? input.Substring(1) : input;
             return ContainsValidCharacters(number) && FirstDigitIsNotZero(number);
         }
@@ -34,7 +39,7 @@ namespace Json
                 {
                     return true;
                 }
-                else if (!IsDigit(c) && !IsExponent(c) && c != '.' && !ParenthesesSquareAllowed(input))
+                else if (!IsDigit(c) && !IsExponent(c) && c != '.' && !IsEnclosedInSquareBrackets(input))
                 {
                     return false;
                 }
@@ -51,7 +56,7 @@ namespace Json
             return countDots <= 1 && countExponents <= 1;
         }
 
-        static bool ParenthesesSquareAllowed(string input)
+        static bool IsEnclosedInSquareBrackets(string input)
         {
             return input[0] == '[' && input[input.Length - 1] == ']';
         }
@@ -70,7 +75,7 @@ namespace Json
 
         static bool IsFractionBeforeExponent(int countDots, int countExponents, int indexDot, int indexExponent)
         {
-           return countDots == 1 && countExponents == 1 && indexDot > indexExponent;
+            return countDots == 1 && countExponents == 1 && indexDot > indexExponent;
         }
 
         static int CountDotsOrExponents(string input, char targetCharacter)
@@ -89,17 +94,22 @@ namespace Json
 
         static bool IsPositiveOrNegativeExponent(string input, char c, int index)
         {
-            return IsPlusOrMinus(c, input, index) && IsExponent(input[index - 1]) && IsNotFirstOrLastIndex(input, index);
+            if (input.Length < 2)
+            {
+                return false;
+            }
+
+            return IsSign(c, input, index) && IsExponent(input[index - 1]) && !IsFirstOrLastIndex(input, index);
         }
 
         static bool IsNotValidDotOrExponent(string input, char c, int index)
         {
-            return (c == '.' || IsExponent(c)) && !IsNotFirstOrLastIndex(input, index);
+            return (c == '.' || IsExponent(c)) && IsFirstOrLastIndex(input, index);
         }
 
-        static bool IsPlusOrMinus(char c, string input, int index)
+        static bool IsSign(char c, string input, int index)
         {
-            return c == '+' || c == '-' && IsNotFirstOrLastIndex(input, index);
+            return c == '+' || c == '-' && !IsFirstOrLastIndex(input, index);
         }
 
         static bool IsExponent(char c)
@@ -107,9 +117,18 @@ namespace Json
             return c == 'e' || c == 'E';
         }
 
-        static bool IsNotFirstOrLastIndex(string input, int index)
+        static bool IsFirstOrLastIndex(string input, int index)
         {
-            return index != 0 && index != input.Length - 1;
+            if (index == 0)
+            {
+                return true;
+            }
+            else if (index == input.Length - 1)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         static bool IsDigit(char c)

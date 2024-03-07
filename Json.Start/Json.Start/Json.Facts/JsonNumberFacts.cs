@@ -160,12 +160,10 @@ namespace Json.Facts
         }
 
         [Fact]
-        public void CEva()
+        public void SignAloneIsInvalid()
         {
             Assert.False(IsJsonNumber("+"));
             Assert.False(IsJsonNumber("-"));
-            Assert.False(IsJsonNumber("e"));
-            Assert.False(IsJsonNumber("e"));
         }
     }
 }
