@@ -4,25 +4,25 @@ namespace Json
 {
     public static class JsonString
     {
-        public static bool IsJsonString(string input)
+        public static bool IsJsonString(string key)
         {
-            if (string.IsNullOrEmpty(input))
+            if (string.IsNullOrEmpty(key))
             {
                 return false;
             }
 
-            if (!StartsAndEndsWithDoubleQuote(input))
+            if (!StartsAndEndsWithDoubleQuote(key))
             {
                 return false;
             }
 
-            for (int i = 0; i < input.Length; i++)
+            for (int i = 0; i < key.Length; i++)
             {
-                if (input[i] == '\\' && !AfterBackslash(input[i + 1], input, ref i))
+                if (key[i] == '\\' && !AfterBackslash(key[i + 1], key, ref i))
                 {
                     return false;
                 }
-                else if (IsControlCharacter(input[i]))
+                else if (IsControlCharacter(key[i]))
                 {
                     return false;
                 }
@@ -31,19 +31,19 @@ namespace Json
             return true;
         }
 
-        static bool StartsAndEndsWithDoubleQuote(string input)
+        static bool StartsAndEndsWithDoubleQuote(string key)
         {
-            return (input[0] == '"') && (input[input.Length - 1] == '"');
+            return (key[0] == '"') && (key[key.Length - 1] == '"');
         }
 
-        static bool AfterBackslash(char nextChar, string input, ref int index)
+        static bool AfterBackslash(char nextChar, string key, ref int index)
         {
             switch (nextChar)
             {
                 case 'u':
-                    return CheckUnicodeValidity(input, index);
+                    return CheckUnicodeValidity(key, index);
                 case '"':
-                    return index + 1 != input.Length - 1;
+                    return index + 1 != key.Length - 1;
                 case '\\':
                 case '/':
                 case 'b':
@@ -58,12 +58,12 @@ namespace Json
             }
         }
 
-        static bool CheckUnicodeValidity(string input, int i)
+        static bool CheckUnicodeValidity(string key, int i)
         {
             const int numbersOfHexChars = 4;
             for (int j = 0; j < numbersOfHexChars; j++)
             {
-                char hexChar = input[i + j + 2];
+                char hexChar = key[i + j + 2];
                 if (!IsValidHex(hexChar))
                 {
                     return false;
@@ -80,7 +80,7 @@ namespace Json
 
         static bool IsLetter(char hexChar)
         {
-            return (hexChar >= 'A' && hexChar <= 'Z') || (hexChar >= 'a' && hexChar <= 'z');
+            return (hexChar >= 'A' && hexChar <= 'F') || (hexChar >= 'a' && hexChar <= 'f');
         }
 
         static bool IsControlCharacter(char c)

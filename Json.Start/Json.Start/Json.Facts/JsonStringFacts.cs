@@ -132,6 +132,22 @@ namespace Json.Facts
             Assert.False(IsJsonString(Quoted(@"a\u123")));
         }
 
+        [Fact]
+        public void DoesNotContainHexadecimalControlCharacters()
+        {
+            Assert.False(IsJsonString(Quoted("\u000A")));
+            Assert.False(IsJsonString(Quoted("\u000D")));
+            Assert.False(IsJsonString(Quoted("\u0009")));
+            Assert.False(IsJsonString(Quoted("\u0008")));
+            Assert.False(IsJsonString(Quoted("\u000C")));
+            Assert.False(IsJsonString(Quoted("\u005C")));
+        }
+        
+        [Fact]
+        public void CanContainOnlyUnderscore()
+        {
+            Assert.True(IsJsonString(Quoted("_")));
+        }
         public static string Quoted(string text)
             => $"\"{text}\"";
     }
