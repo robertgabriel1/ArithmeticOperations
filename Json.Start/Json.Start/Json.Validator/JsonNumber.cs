@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 
 namespace Json
 {
@@ -53,12 +54,27 @@ namespace Json
                 return false;
             }
 
-            return countDots <= 1 && countExponents <= 1;
+            return IsValidArray(input, countDots, countExponents);
         }
 
         static bool IsEnclosedInSquareBrackets(string input)
         {
             return input[0] == '[' && input[input.Length - 1] == ']';
+        }
+
+        static bool IsValidArray(string input, int countDots, int countExponents)
+        {
+            int countCommas = 0;
+            foreach (char c in input)
+            {
+                if (c == ',')
+                {
+                    countCommas++;
+                }
+            }
+
+            bool isValid = IsEnclosedInSquareBrackets(input);
+            return isValid ? countDots <= countCommas + 1 && countExponents <= countCommas + 1 : countDots <= 1 && countExponents <= 1;
         }
 
         static void UpdateIndicesForDotAndExponent(char c, ref int indexDot, ref int indexExponent, int currentIndex)

@@ -165,5 +165,17 @@ namespace Json.Facts
             Assert.False(IsJsonNumber("+"));
             Assert.False(IsJsonNumber("-"));
         }
+
+        [Fact]
+        public void CanContainMultipleDots()
+        {
+            Assert.True(IsJsonNumber("[1.23, 2.34]"));
+        }
+
+        [Fact]
+        public void CanContainMultipleExponents()
+        {
+            Assert.True(IsJsonNumber("[1.2e3, 2.3e4]"));
+        }
     }
 }
