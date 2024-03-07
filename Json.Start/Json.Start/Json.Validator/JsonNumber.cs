@@ -33,7 +33,7 @@ namespace Json
                 {
                     return true;
                 }
-                else if (!IsDigit(c) && !IsExponent(c) && c != '.')
+                else if (!IsDigit(c) && !IsExponent(c) && c != '.' && !ParenthesesSquareAllowed(input))
                 {
                     return false;
                 }
@@ -48,6 +48,11 @@ namespace Json
             }
 
             return countDots <= 1 && countExponents <= 1;
+        }
+
+        static bool ParenthesesSquareAllowed(string input)
+        {
+            return input[0] == '[' && input[input.Length - 1] == ']';
         }
 
         static void UpdateIndicesForDotAndExponent(char c, ref int indexDot, ref int indexExponent, int currentIndex)

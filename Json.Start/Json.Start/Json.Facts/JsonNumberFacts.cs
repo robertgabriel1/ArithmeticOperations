@@ -146,5 +146,11 @@ namespace Json.Facts
         {
             Assert.False(IsJsonNumber("22e3.3"));
         }
+
+        [Fact]
+        public void ParenthesesSquareAllowed()
+        {
+            Assert.True(IsJsonNumber("[1, 2, 3]"));
+        }
     }
 }
