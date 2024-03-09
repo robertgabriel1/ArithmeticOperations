@@ -177,5 +177,11 @@ namespace Json.Facts
         {
             Assert.True(IsJsonNumber("[1.2e3, 2.3e4]"));
         }
+
+        [Fact]
+        public void CanContainMultipleSigns()
+        {
+            Assert.True(IsJsonNumber("[1.2e+3, 2.3e-4, -2]"));
+        }
     }
 }

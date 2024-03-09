@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Specialized;
 
 namespace Json
 {
@@ -28,8 +27,9 @@ namespace Json
             int currentIndex = 0;
             int indexDot = 0;
             int indexExponent = 0;
-            int countDots = CountDotsOrExponents(input, '.');
-            int countExponents = CountDotsOrExponents(input, 'e') + CountDotsOrExponents(input, 'E');
+            int countDots = CountElements(input, '.');
+            int countExponents = CountElements(input, 'e') + CountElements(input, 'E');
+            int countSigns = CountElements(input, '+') + CountElements(input, '-');
             foreach (char c in input)
             {
                 if (IsNotValidDotOrExponent(input, c, currentIndex))
@@ -54,7 +54,7 @@ namespace Json
                 return false;
             }
 
-            return IsValidArray(input, countDots, countExponents);
+            return IsValidArray(input, countDots, countExponents, countSigns);
         }
 
         static bool IsEnclosedInSquareBrackets(string input)
@@ -62,7 +62,7 @@ namespace Json
             return input[0] == '[' && input[input.Length - 1] == ']';
         }
 
-        static bool IsValidArray(string input, int countDots, int countExponents)
+        static bool IsValidArray(string input, int countDots, int countExponents, int countSigns)
         {
             int countCommas = 0;
             foreach (char c in input)
@@ -74,7 +74,10 @@ namespace Json
             }
 
             bool isValid = IsEnclosedInSquareBrackets(input);
-            return isValid ? countDots <= countCommas + 1 && countExponents <= countCommas + 1 : countDots <= 1 && countExponents <= 1;
+            int maxAllowed = countCommas + 1;
+            bool isValidLimit = countDots <= maxAllowed && countExponents <= maxAllowed && countSigns <= maxAllowed;
+            bool isValidSingle = countDots <= 1 && countExponents <= 1 && countSigns <= 1;
+            return isValid ? isValidLimit : isValidSingle;
         }
 
         static void UpdateIndicesForDotAndExponent(char c, ref int indexDot, ref int indexExponent, int currentIndex)
@@ -94,7 +97,7 @@ namespace Json
             return countDots == 1 && countExponents == 1 && indexDot > indexExponent;
         }
 
-        static int CountDotsOrExponents(string input, char targetCharacter)
+        static int CountElements(string input, char targetCharacter)
         {
             int count = 0;
             foreach (char c in input)

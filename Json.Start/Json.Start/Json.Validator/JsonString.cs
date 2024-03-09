@@ -4,25 +4,25 @@ namespace Json
 {
     public static class JsonString
     {
-        public static bool IsJsonString(string key)
+        public static bool IsJsonString(string input)
         {
-            if (string.IsNullOrEmpty(key))
+            if (string.IsNullOrEmpty(input))
             {
                 return false;
             }
 
-            if (!StartsAndEndsWithDoubleQuote(key))
+            if (!StartsAndEndsWithDoubleQuote(input))
             {
                 return false;
             }
 
-            for (int i = 0; i < key.Length; i++)
+            for (int i = 0; i < input.Length; i++)
             {
-                if (key[i] == '\\' && !AfterBackslash(key[i + 1], key, ref i))
+                if (input[i] == '\\' && !HandleAllEscapeSequences(input[i + 1], input, ref i))
                 {
                     return false;
                 }
-                else if (IsControlCharacter(key[i]))
+                else if (IsControlCharacter(input[i]))
                 {
                     return false;
                 }
@@ -31,39 +31,48 @@ namespace Json
             return true;
         }
 
-        static bool StartsAndEndsWithDoubleQuote(string key)
+        static bool StartsAndEndsWithDoubleQuote(string input)
         {
-            return (key[0] == '"') && (key[key.Length - 1] == '"');
+            return (input[0] == '"') && (input[^1] == '"');
         }
 
-        static bool AfterBackslash(char nextChar, string key, ref int index)
+        static bool HandleAllEscapeSequences(char nextChar, string input, ref int index)
         {
-            switch (nextChar)
+            return nextChar switch
             {
-                case 'u':
-                    return CheckUnicodeValidity(key, index);
-                case '"':
-                    return index + 1 != key.Length - 1;
-                case '\\':
-                case '/':
-                case 'b':
-                case 'f':
-                case 'n':
-                case 'r':
-                case 't':
-                    index++;
-                    return true;
-                default:
-                    return false;
-            }
+                'u' => CheckUnicodeValidity(input, index),
+                '"' => !IsLastCharacter(input, index),
+                _ => HandleBasicEscapeSequence(nextChar, ref index)
+            };
         }
 
-        static bool CheckUnicodeValidity(string key, int i)
+        static bool HandleBasicEscapeSequence(char nextChar, ref int index)
+        {
+            return nextChar switch
+            {
+                '\\' or '/' or 'b' => MoveForwardAndConfirm(ref index),
+                'f' or 'n' or 'r' or 't' => MoveForwardAndConfirm(ref index),
+                _ => false
+            };
+        }
+
+        static bool MoveForwardAndConfirm(ref int index)
+        {
+            index++;
+            return true;
+        }
+
+        static bool IsLastCharacter(string input, int index)
+        {
+            return index + 1 == input.Length - 1;
+        }
+
+        static bool CheckUnicodeValidity(string input, int i)
         {
             const int numbersOfHexChars = 4;
             for (int j = 0; j < numbersOfHexChars; j++)
             {
-                char hexChar = key[i + j + 2];
+                char hexChar = input[i + j + 2];
                 if (!IsValidHex(hexChar))
                 {
                     return false;
@@ -75,17 +84,17 @@ namespace Json
 
         static bool IsValidHex(char hexChar)
         {
-            return (hexChar >= '0' && hexChar <= '9') || IsLetter(hexChar);
+            return char.IsDigit(hexChar) || IsHexLetter(hexChar);
         }
 
-        static bool IsLetter(char hexChar)
+        static bool IsHexLetter(char hexChar)
         {
             return (hexChar >= 'A' && hexChar <= 'F') || (hexChar >= 'a' && hexChar <= 'f');
         }
 
         static bool IsControlCharacter(char c)
         {
-            const int lastControlCharacter = 32;
+            const char lastControlCharacter = (char)31;
             return c < lastControlCharacter;
         }
     }
