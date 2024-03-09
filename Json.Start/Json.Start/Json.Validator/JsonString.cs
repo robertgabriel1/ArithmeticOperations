@@ -33,7 +33,17 @@ namespace Json
 
         static bool StartsAndEndsWithDoubleQuote(string input)
         {
-            return (input[0] == '"') && (input[^1] == '"');
+            int countQuote = 0;
+            foreach (char c in input)
+            {
+                if (c == '"')
+                {
+                    countQuote++;
+                }
+            }
+
+            const int isPair = 2;
+            return (input[0] == '"') && (input[^1] == '"') && countQuote % isPair == 0;
         }
 
         static bool HandleAllEscapeSequences(char nextChar, string input, ref int index)
