@@ -148,6 +148,19 @@ namespace Json.Facts
         {
             Assert.True(IsJsonString(Quoted("_")));
         }
+
+        [Fact]
+        public void CanContainLeadingAndTrailingWhitespaces()
+        {
+            Assert.True(IsJsonString(Quoted(" abc ")));
+        }
+
+        [Fact]
+        public void CanContainSpecialCharacters()
+        {
+            Assert.True(IsJsonString(Quoted("!@#$%^&*()")));
+        }
+
         public static string Quoted(string text)
             => $"\"{text}\"";
     }
