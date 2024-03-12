@@ -111,6 +111,7 @@ namespace Json.Facts
         public void CanContainAnyMultipleEscapeSequences()
         {
             Assert.True(IsJsonString(Quoted(@"\\\u1212\n\t\r\\\b")));
+            Assert.True(IsJsonString(Quoted(@"\u1212\\\n\t\r\\\b")));
         }
 
         [Fact]

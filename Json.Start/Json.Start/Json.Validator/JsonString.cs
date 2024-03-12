@@ -18,13 +18,9 @@ namespace Json
 
             for (int i = 0; i < input.Length; i++)
             {
-                if (input[i] == '\\' && input[i + 1] == '\\')
+                if (input[i] == '\\' && !HandleAllEscapeSequences(input[i + 1], input, i))
                 {
-                    return true;
-                }
-                else if (input[i] == '\\' && !HandleAllEscapeSequences(input[i + 1], input, i))
-                {
-                    return false;
+                    return input[i + 1] == '\\';
                 }
                 else if (IsControlCharacter(input[i]))
                 {
