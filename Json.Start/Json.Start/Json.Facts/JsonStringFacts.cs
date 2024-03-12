@@ -142,7 +142,7 @@ namespace Json.Facts
             Assert.False(IsJsonString(Quoted("\u000C")));
             Assert.False(IsJsonString(Quoted("\u005C")));
         }
-        
+
         [Fact]
         public void CanContainOnlyUnderscore()
         {

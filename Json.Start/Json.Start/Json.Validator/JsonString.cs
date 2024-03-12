@@ -11,7 +11,7 @@ namespace Json
                 return false;
             }
 
-            if (!StartsAndEndsWithDoubleQuote(input))
+            if (!StartsAndEndsWithDoubleQuote(input) && !IsQuotedPairCountEven(input))
             {
                 return false;
             }
@@ -33,6 +33,11 @@ namespace Json
 
         static bool StartsAndEndsWithDoubleQuote(string input)
         {
+            return (input[0] == '"') && (input[^1] == '"');
+        }
+
+        static bool IsQuotedPairCountEven(string input)
+        {
             int countQuote = 0;
             foreach (char c in input)
             {
@@ -43,7 +48,7 @@ namespace Json
             }
 
             const int isPair = 2;
-            return (input[0] == '"') && (input[^1] == '"') && countQuote % isPair == 0;
+            return countQuote % isPair == 0;
         }
 
         static bool HandleAllEscapeSequences(char nextChar, string input, ref int index)
