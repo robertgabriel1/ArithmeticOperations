@@ -18,7 +18,11 @@ namespace Json
 
             for (int i = 0; i < input.Length; i++)
             {
-                if (input[i] == '\\' && !HandleAllEscapeSequences(input[i + 1], input, ref i))
+                if (input[i] == '\\' && input[i + 1] == '\\')
+                {
+                    return true;
+                }
+                else if (input[i] == '\\' && !HandleAllEscapeSequences(input[i + 1], input, i))
                 {
                     return false;
                 }
@@ -51,30 +55,16 @@ namespace Json
             return countQuote % isPair == 0;
         }
 
-        static bool HandleAllEscapeSequences(char nextChar, string input, ref int index)
+        static bool HandleAllEscapeSequences(char nextChar, string input, int index)
         {
             return nextChar switch
             {
                 'u' => CheckUnicodeValidity(input, index),
                 '"' => !IsLastCharacter(input, index),
-                _ => HandleBasicEscapeSequence(nextChar, ref index)
-            };
-        }
-
-        static bool HandleBasicEscapeSequence(char nextChar, ref int index)
-        {
-            return nextChar switch
-            {
-                '\\' or '/' or 'b' => MoveForwardAndConfirm(ref index),
-                'f' or 'n' or 'r' or 't' => MoveForwardAndConfirm(ref index),
+                '/' or 'b' => true,
+                'f' or 'n' or 'r' or 't' => true,
                 _ => false
             };
-        }
-
-        static bool MoveForwardAndConfirm(ref int index)
-        {
-            index++;
-            return true;
         }
 
         static bool IsLastCharacter(string input, int index)
@@ -104,13 +94,12 @@ namespace Json
 
         static bool IsHexLetter(char hexChar)
         {
-            return (hexChar >= 'A' && hexChar <= 'F') || (hexChar >= 'a' && hexChar <= 'f');
+            return char.ToUpper(hexChar) >= 'A' && char.ToUpper(hexChar) <= 'F';
         }
 
         static bool IsControlCharacter(char c)
         {
-            const char lastControlCharacter = (char)31;
-            return c < lastControlCharacter;
+            return c < ' ';
         }
     }
 }
