@@ -112,7 +112,10 @@ namespace Json.Facts
         {
             Assert.True(IsJsonString(Quoted(@"\\\u1212\n\t\r\\\b")));
             Assert.True(IsJsonString(Quoted(@"\u1212\\\n\t\r\\\b")));
+<<<<<<< HEAD
             Assert.True(IsJsonString(Quoted(@"\\u1212\\\n\t\r\\\b")));
+=======
+>>>>>>> ab3c3a6236df1888fa5e1b0beae2d16866fd43dc
         }
 
         [Fact]
