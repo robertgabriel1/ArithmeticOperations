@@ -16,17 +16,15 @@ namespace Json
                 return false;
             }
 
-            for (int i = 0; i < input.Length; i++)
+            for (int i = 0; i < input.Length - 1; i++)
             {
-                if (input[i] == '\\' && input[i + 1] == '\\')
-                {
-                    return true;
-                }
-                else if (input[i] == '\\' && !HandleAllEscapeSequences(input[i + 1], input, i))
+                char currentChar = input[i];
+                char nextChar = input[i + 1];
+                if (currentChar == '\\' && !HandleAllEscapeSequences(nextChar, input, i))
                 {
                     return false;
                 }
-                else if (IsControlCharacter(input[i]))
+                else if (IsControlCharacter(currentChar))
                 {
                     return false;
                 }
@@ -55,29 +53,56 @@ namespace Json
             return countQuote % isPair == 0;
         }
 
-        static bool HandleAllEscapeSequences(char nextChar, string input, int index)
+        static bool HandleAllEscapeSequences(char charToCheck, string input, int index)
         {
-            return nextChar switch
+            int nextCharIndex = index + 1;
+            return charToCheck switch
             {
-                'u' => CheckUnicodeValidity(input, index),
-                '"' => !IsLastCharacter(input, index),
-                '/' or 'b' => true,
-                'f' or 'n' or 'r' or 't' => true,
-                _ => false
+                'u' => CheckUnicodeValidity(input, nextCharIndex),
+                '"' => !IsLastCharacter(input, nextCharIndex),
+                _ => IsEscapeSequence(input, index, charToCheck)
             };
         }
 
-        static bool IsLastCharacter(string input, int index)
+        static bool IsEscapeSequence(string input, int index, char c)
         {
-            return index + 1 == input.Length - 1;
+            if (c == 'f' || c == 'n' || c == 'r')
+            {
+                return true;
+            }
+            else if (c == '/' || c == 'b' || c == 't' || IsValidBackslash(input, index, c))
+            {
+                return true;
+            }
+
+            return false;
         }
 
-        static bool CheckUnicodeValidity(string input, int i)
+        static bool IsValidBackslash(string input, int index, char c)
         {
-            const int numbersOfHexChars = 4;
-            for (int j = 0; j < numbersOfHexChars; j++)
+            if (c == '\\')
             {
-                char hexChar = input[i + j + 2];
+                return true;
+            }
+            else if (input[index - 1] == '\\')
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        static bool IsLastCharacter(string input, int nextCharIndex)
+        {
+            return nextCharIndex == input.Length - 1;
+        }
+
+        static bool CheckUnicodeValidity(string input, int nextCharIndex)
+        {
+            const int unicodeCharactersToCheck = 5;
+            for (int j = 1; j < unicodeCharactersToCheck; j++)
+            {
+                char hexChar = input[nextCharIndex + j];
                 if (!IsValidHex(hexChar))
                 {
                     return false;
