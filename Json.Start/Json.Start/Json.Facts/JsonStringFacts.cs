@@ -112,6 +112,7 @@ namespace Json.Facts
         {
             Assert.True(IsJsonString(Quoted(@"\\\u1212\n\t\r\\\b")));
             Assert.True(IsJsonString(Quoted(@"\u1212\\\n\t\r\\\b")));
+            Assert.True(IsJsonString(Quoted(@"\\u1212\\\n\t\r\\\b")));
         }
 
         [Fact]
@@ -160,6 +161,13 @@ namespace Json.Facts
         public void CanContainSpecialCharacters()
         {
             Assert.True(IsJsonString(Quoted("!@#$%^&*()")));
+        }
+
+        [Fact]
+        public void CanContainEscapedBackslashes()
+        {
+            Assert.True(IsJsonString(Quoted(@"\\abc")));
+            Assert.False(IsJsonString(Quoted(@"\\a\xbc")));
         }
 
         public static string Quoted(string text)

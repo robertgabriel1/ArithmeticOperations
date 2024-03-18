@@ -110,6 +110,12 @@ namespace Json.Facts
         }
 
         [Fact]
+        public void Multiple()
+        {
+            Assert.False(IsJsonNumber("12e+3a"));
+        }
+
+        [Fact]
         public void TheExponentCanBeNegative()
         {
             Assert.True(IsJsonNumber("61e-9"));
@@ -148,6 +154,12 @@ namespace Json.Facts
         }
 
         [Fact]
+        public void TheExponentIsAfterTheFractionInArray()
+        {
+            Assert.False(IsJsonNumber("[22e3.3, 12e4.56]"));
+        }
+
+        [Fact]
         public void ParenthesesSquareAllowed()
         {
             Assert.True(IsJsonNumber("[1, 2, 3]"));
@@ -182,6 +194,7 @@ namespace Json.Facts
         public void CanContainMultipleSigns()
         {
             Assert.True(IsJsonNumber("[1.2e+3, 2.3e-4, -2]"));
+            Assert.True(IsJsonNumber("[-1.2e+3, 2.3e-4, -2]"));
         }
     }
 }
