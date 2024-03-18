@@ -11,7 +11,7 @@ namespace Json
                 return false;
             }
 
-            if (!StartsAndEndsWithDoubleQuote(input) && !IsQuotedPairCountEven(input))
+            if (!StartsAndEndsWithDoubleQuote(input))
             {
                 return false;
             }
@@ -22,11 +22,13 @@ namespace Json
                 step = 1;
                 char currentChar = input[i];
                 char nextChar = input[i + 1];
-                if (currentChar == '\\' && !HandleAllEscapeSequences(nextChar, input, i, ref step))
+                int lastCharacterIndex = input.Length - 2;
+                if (currentChar == '\\' && (i == lastCharacterIndex || !CanHandleEscapeSequence(input, i, ref step)))
                 {
                     return false;
                 }
-                else if (IsControlCharacter(currentChar))
+
+                if (IsControlCharacter(currentChar))
                 {
                     return false;
                 }
@@ -37,45 +39,23 @@ namespace Json
 
         static bool StartsAndEndsWithDoubleQuote(string input)
         {
-            return (input[0] == '"') && (input[^1] == '"');
+            return input.Length >= 2 && input[0] == '"' && input[^1] == '"';
         }
 
-        static bool IsQuotedPairCountEven(string input)
-        {
-            int countQuote = 0;
-            foreach (char c in input)
-            {
-                if (c == '"')
-                {
-                    countQuote++;
-                }
-            }
-
-            const int isPair = 2;
-            return countQuote % isPair == 0;
-        }
-
-        static bool HandleAllEscapeSequences(char charToCheck, string input, int index, ref int step)
+        static bool CanHandleEscapeSequence(string input, int index, ref int step)
         {
             int nextCharIndex = index + 1;
+            char charToCheck = input[nextCharIndex];
             const int charsToSkipIfIsUnicode = 4;
             if (charToCheck == 'u' && IsValidUnicodeSequence(input, nextCharIndex))
             {
                 step += charsToSkipIfIsUnicode;
                 return true;
             }
-            else if (charToCheck == '"' && !IsLastCharacter(input, nextCharIndex))
+            else if (IsCharacterEscape(charToCheck))
             {
                 step++;
                 return true;
-            }
-            else
-            {
-                if (IsCharacterEscape(charToCheck))
-                {
-                    step++;
-                    return true;
-                }
             }
 
             return false;
@@ -83,17 +63,8 @@ namespace Json
 
         static bool IsCharacterEscape(char c)
         {
-            return c switch
-            {
-                'f' or 'n' or 'r' or '/' => true,
-                'b' or 't' or '\\' => true,
-                _ => false
-            };
-        }
-
-        static bool IsLastCharacter(string input, int nextCharIndex)
-        {
-            return nextCharIndex == input.Length - 1;
+            const string escapeCharacters = "fnr/bt\\\"";
+            return escapeCharacters.Contains(c);
         }
 
         static bool IsValidUnicodeSequence(string input, int nextCharIndex)
