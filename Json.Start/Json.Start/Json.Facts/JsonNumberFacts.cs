@@ -1,5 +1,4 @@
-﻿
-using Xunit;
+﻿using Xunit;
 using static Json.JsonNumber;
 
 namespace Json.Facts
@@ -16,6 +15,7 @@ namespace Json.Facts
         public void DoesNotContainLetters()
         {
             Assert.False(IsJsonNumber("a"));
+            Assert.False(IsJsonNumber("A"));
         }
 
         [Fact]
@@ -46,6 +46,7 @@ namespace Json.Facts
         public void DoesNotStartWithZero()
         {
             Assert.False(IsJsonNumber("07"));
+            Assert.False(IsJsonNumber("017"));
         }
 
         [Fact]
@@ -80,6 +81,12 @@ namespace Json.Facts
         }
 
         [Fact]
+        public void DoesStartdWithADot()
+        {
+            Assert.False(IsJsonNumber(".12"));
+        }
+
+        [Fact]
         public void DoesNotHaveTwoFractionParts()
         {
             Assert.False(IsJsonNumber("12.34.56"));
@@ -109,11 +116,6 @@ namespace Json.Facts
             Assert.True(IsJsonNumber("12e+3"));
         }
 
-        [Fact]
-        public void Multiple()
-        {
-            Assert.False(IsJsonNumber("12e+3a"));
-        }
 
         [Fact]
         public void TheExponentCanBeNegative()
@@ -137,12 +139,16 @@ namespace Json.Facts
         public void DoesNotHaveTwoExponents()
         {
             Assert.False(IsJsonNumber("22e323e33"));
+            Assert.False(IsJsonNumber("22.3e323e33"));
+            Assert.False(IsJsonNumber("22.3e-323e33"));
+            Assert.False(IsJsonNumber("22.3E-323E33"));
         }
 
         [Fact]
         public void TheExponentIsAlwaysComplete()
         {
             Assert.False(IsJsonNumber("22e"));
+            Assert.False(IsJsonNumber("22E"));
             Assert.False(IsJsonNumber("22e+"));
             Assert.False(IsJsonNumber("23E-"));
         }
@@ -151,50 +157,57 @@ namespace Json.Facts
         public void TheExponentIsAfterTheFraction()
         {
             Assert.False(IsJsonNumber("22e3.3"));
+            Assert.True(IsJsonNumber("22.e33"));
         }
 
         [Fact]
-        public void TheExponentIsAfterTheFractionInArray()
-        {
-            Assert.False(IsJsonNumber("[22e3.3, 12e4.56]"));
-        }
-
-        [Fact]
-        public void ParenthesesSquareAllowed()
-        {
-            Assert.True(IsJsonNumber("[1, 2, 3]"));
-        }
-
-        [Fact]
-        public void CanContainLeadingAndTrailingWhitespaces()
-        {
-            Assert.True(IsJsonNumber(" [1, 2, 3] "));
-        }
-
-        [Fact]
-        public void SignAloneIsInvalid()
+        public void SignOnlyIsNotValid()
         {
             Assert.False(IsJsonNumber("+"));
             Assert.False(IsJsonNumber("-"));
         }
 
         [Fact]
-        public void CanContainMultipleDots()
+        public void DoesNotContainInvalidSymbol()
         {
-            Assert.True(IsJsonNumber("[1.23, 2.34]"));
+            Assert.False(IsJsonNumber("123#456"));
+            Assert.False(IsJsonNumber("12$34"));
+            Assert.False(IsJsonNumber("1%23"));
         }
 
         [Fact]
-        public void CanContainMultipleExponents()
+        public void SignCannotBeBeforeExponent()
         {
-            Assert.True(IsJsonNumber("[1.2e3, 2.3e4]"));
+            Assert.False(IsJsonNumber("12+e3"));
+            Assert.False(IsJsonNumber("12-e3"));
         }
 
         [Fact]
-        public void CanContainMultipleSigns()
+        public void DoesNotHaveTwoOrMoreSigns()
         {
-            Assert.True(IsJsonNumber("[1.2e+3, 2.3e-4, -2]"));
-            Assert.True(IsJsonNumber("[-1.2e+3, 2.3e-4, -2]"));
+            Assert.False(IsJsonNumber("22.3e++3"));
+            Assert.False(IsJsonNumber("14.3e--323e33"));
+            Assert.False(IsJsonNumber("26.3e-3+5-7"));
+        }
+
+        [Fact]
+        public void DoesStartdWithExponent()
+        {
+            Assert.False(IsJsonNumber("e52"));
+            Assert.False(IsJsonNumber("E34"));
+        }
+
+        [Fact]
+        public void DoesStartdWithPositiveSign()
+        {
+            Assert.False(IsJsonNumber("+13"));
+            Assert.False(IsJsonNumber("+34e5"));
+        }
+
+        [Fact]
+        public void CanNotHaveMultipleLeadingNegativeSigns()
+        {
+            Assert.False(IsJsonNumber("--46"));
         }
     }
 }

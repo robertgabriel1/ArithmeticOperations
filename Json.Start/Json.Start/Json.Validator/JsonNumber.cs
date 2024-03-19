@@ -12,103 +12,106 @@ namespace Json
             }
 
             input = input.Trim();
-            bool isNegative = false;
-            if (input.Length > 1)
-            {
-                isNegative = IsSign(input[0]);
-            }
-
-            string number = isNegative ? input.Substring(1) : input;
-            return ContainsValidCharacters(number) && ValidZeroFirstDigit(input);
+            string number = IsNegativeNumber(input) ? input.Substring(1) : input;
+            return ContainsValidCharacters(number);
         }
 
         static bool ContainsValidCharacters(string input)
         {
-            int countDots = CountElements(input, '.');
-            int countExponents = CountElements(input, 'e') + CountElements(input, 'E');
-            int countSigns = CountElements(input, '+') + CountElements(input, '-');
             for (int i = 0; i < input.Length; i++)
             {
                 char currentChar = input[i];
-                if (IsDotOrExponentAtEdge(input, currentChar, i))
+                switch (currentChar)
                 {
-                    return false;
-                }
-                else if (!IsValidExponentSign(input, currentChar, i))
-                {
-                    return false;
-                }
-                else if (IsSpecialCharacter(currentChar) && !IsEnclosedInSquareBrackets(input))
-                {
-                    return false;
-                }
-                else if (!ExponentIsBeforeDot(input))
-                {
-                    return false;
+                    case char c when char.IsDigit(c):
+                        if (HasLeadingZeroWithoutDecimal(input, i, currentChar))
+                        {
+                            return false;
+                        }
+
+                        break;
+                    case char c when IsDot(c):
+                        if (!IsValidFraction(input, i))
+                        {
+                            return false;
+                        }
+
+                        break;
+                    case char c when IsExponentOrSign(c):
+                        if (!IsValidExponent(input, i, currentChar))
+                        {
+                            return false;
+                        }
+
+                        break;
+                    default:
+                        return false;
                 }
             }
 
-            return IsValidArray(input, countDots, countExponents, countSigns);
+            return true;
         }
 
-        static bool ExponentIsBeforeDot(string input)
+        static bool IsExponentOrSign(char currentChar)
+        {
+            return IsExponent(currentChar) || IsSign(currentChar);
+        }
+
+        static bool IsValidFraction(string input, int index)
+        {
+            int numberOfDots = CountElements(input, '.');
+            return !IsFirstOrLastIndex(input, index) && numberOfDots <= 1;
+        }
+
+        static bool IsValidExponent(string input, int index, char currentChar)
+        {
+            int numberOfSigns = CountElements(input, '+') + CountElements(input, '-');
+            int numberOfExponents = CountElements(input, 'e') + CountElements(input, 'E');
+            if (IsFirstOrLastIndex(input, index) || numberOfExponents > 1 || numberOfSigns > 1)
+            {
+                return false;
+            }
+            else if (IsSign(currentChar) && !IsExponent(input[index - 1]))
+            {
+                return false;
+            }
+            else if (IsExponent(currentChar) && !IsDotBeforeExponent(input))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        static bool HasLeadingZeroWithoutDecimal(string input, int index, char currentChar)
+        {
+            return currentChar == '0' && input.Length > 1 && index == 0 && !IsDot(input[1]);
+        }
+
+        static bool IsDotBeforeExponent(string input)
         {
             bool result = true;
             int indexDot = -1;
             int indexExponent = -1;
             for (int i = 0; i < input.Length; i++)
             {
-                if (input[i] == '.')
+                if (IsDot(input[i]))
                 {
                     indexDot = i;
                 }
 
-                if (input[i] == 'e')
+                if (IsExponent(input[i]))
                 {
                     indexExponent = i;
                 }
 
-                if (indexDot != -1 && indexExponent != -1)
+                if (indexDot != -1 && indexExponent != -1 && indexDot > indexExponent)
                 {
-                    if (indexDot > indexExponent)
-                    {
                         result = false;
-                    }
-
-                    indexDot = -1;
-                    indexExponent = -1;
                 }
             }
 
             return result;
-        }
-
-        static bool IsSpecialCharacter(char c)
-        {
-            return !char.IsDigit(c) && !IsExponent(c) && c != '.' && !IsSign(c);
-        }
-
-        static bool IsEnclosedInSquareBrackets(string input)
-        {
-            return input[0] == '[' && input[input.Length - 1] == ']';
-        }
-
-        static bool IsValidArray(string input, int countDots, int countExponents, int countSigns)
-        {
-            int countCommas = 0;
-            foreach (char c in input)
-            {
-                if (c == ',')
-                {
-                    countCommas++;
-                }
-            }
-
-            bool isValid = IsEnclosedInSquareBrackets(input);
-            int maxAllowed = countCommas + 1;
-            bool isValidLimit = countDots <= maxAllowed && countExponents <= maxAllowed && countSigns <= maxAllowed;
-            bool isValidSingle = countDots <= 1 && countExponents <= 1 && countSigns <= 1;
-            return isValid ? isValidLimit : isValidSingle;
         }
 
         static int CountElements(string input, char targetCharacter)
@@ -117,54 +120,13 @@ namespace Json
             for (int i = 0; i < input.Length; i++)
             {
                 char currentChar = input[i];
-
-                if (NegativeArrayElement(input, i, currentChar))
-                {
-                    count += 0;
-                }
-                else if (currentChar == targetCharacter)
+                if (currentChar == targetCharacter)
                 {
                     count++;
                 }
             }
 
             return count;
-        }
-
-        static bool IsValidExponentSign(string input, char currentChar, int index)
-        {
-            if (!IsSign(currentChar))
-            {
-                return true;
-            }
-
-            if (IsSign(currentChar) && NegativeArrayElement(input, index, currentChar))
-            {
-                return true;
-            }
-
-            return input.Length > 1 && IsExponent(input[index - 1]) && !IsFirstOrLastIndex(input, index);
-        }
-
-        static bool NegativeArrayElement(string input, int index, char currentChar)
-        {
-            return IsFirstElementNegative(input, index, currentChar) || IsNegativeElementAfterComma(input, index, currentChar);
-        }
-
-        static bool IsFirstElementNegative(string input, int index, char currentChar)
-        {
-            return index >= 1 && currentChar == '-' && input[index - 1] == '[';
-        }
-
-        static bool IsNegativeElementAfterComma(string input, int index, char currentChar)
-        {
-            const int twoCharsBefore = 2;
-            return index > 1 && currentChar == '-' && input[index - twoCharsBefore] == ',';
-        }
-
-        static bool IsDotOrExponentAtEdge(string input, char c, int index)
-        {
-            return (c == '.' || IsExponent(c)) && IsFirstOrLastIndex(input, index);
         }
 
         static bool IsSign(char c)
@@ -177,20 +139,25 @@ namespace Json
             return c == 'e' || c == 'E';
         }
 
+        static bool IsDot(char c)
+        {
+            return c == '.';
+        }
+
         static bool IsFirstOrLastIndex(string input, int index)
         {
             return index == 0 || index == input.Length - 1;
         }
 
-        static bool ValidZeroFirstDigit(string input)
+        static bool IsNegativeNumber(string input)
         {
-            bool result = true;
-            if (input.Length > 1 && input[0] == '0' && input[1] != '.')
+            bool isNegative = false;
+            if (input.Length > 1)
             {
-                result = false;
+                isNegative = input[0] == '-';
             }
 
-            return result;
+            return isNegative;
         }
     }
 }
