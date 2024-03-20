@@ -81,7 +81,7 @@ namespace Json.Facts
         }
 
         [Fact]
-        public void DoesStartdWithADot()
+        public void DoesStartWithADot()
         {
             Assert.False(IsJsonNumber(".12"));
         }
@@ -157,7 +157,12 @@ namespace Json.Facts
         public void TheExponentIsAfterTheFraction()
         {
             Assert.False(IsJsonNumber("22e3.3"));
-            Assert.True(IsJsonNumber("22.e33"));
+        }
+
+        [Fact]
+        public void TheExponentIsFirstAfterDot()
+        {
+            Assert.False(IsJsonNumber("22.e33"));
         }
 
         [Fact]
@@ -191,14 +196,14 @@ namespace Json.Facts
         }
 
         [Fact]
-        public void DoesStartdWithExponent()
+        public void DoesStartWithExponent()
         {
             Assert.False(IsJsonNumber("e52"));
             Assert.False(IsJsonNumber("E34"));
         }
 
         [Fact]
-        public void DoesStartdWithPositiveSign()
+        public void DoesStartWithPositiveSign()
         {
             Assert.False(IsJsonNumber("+13"));
             Assert.False(IsJsonNumber("+34e5"));
