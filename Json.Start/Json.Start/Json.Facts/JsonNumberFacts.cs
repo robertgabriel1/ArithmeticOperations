@@ -214,5 +214,12 @@ namespace Json.Facts
         {
             Assert.False(IsJsonNumber("--46"));
         }
+
+        [Fact]
+        public void ExponentialSignShouldAppearAfterExponent()
+        {
+            Assert.False(IsJsonNumber("123ea-67"));
+            Assert.False(IsJsonNumber("123e2-67"));
+        }
     }
 }

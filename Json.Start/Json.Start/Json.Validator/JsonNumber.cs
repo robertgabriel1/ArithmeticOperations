@@ -12,19 +12,10 @@ namespace Json
           }
 
           input = input.Trim();
-          string number = IsNegativeNumber(input) ? input.Substring(1) : input;
-          if (!char.IsDigit(number[0]) || !char.IsDigit(number[^1]))
-            {
-                return false;
-            }
-
-          string integerPart = ExtractIntegerPart(number);
-          string fractionalPart = ExtractFractionalPart(number);
-          string exponentPart = ExtractExponentPart(number);
-
-          return IsValidIntegerPart(integerPart) &&
-                 IsValidFractionalPart(fractionalPart) &&
-                 IsValidExponentPart(exponentPart);
+          string number = input.StartsWith('-') ? input[1..] : input;
+          return IsValidIntegerPart(ExtractIntegerPart(number)) &&
+                 IsValidFractionalPart(ExtractFractionalPart(number)) &&
+                 IsValidExponentPart(ExtractExponentPart(number));
        }
 
        static string ExtractIntegerPart(string input)
@@ -36,13 +27,13 @@ namespace Json
                 return input;
             }
 
-            return dotIndex != -1 ? input.Substring(0, dotIndex) : input.Substring(0, exponentIndex);
+            return dotIndex != -1 ? input[..dotIndex] : input[..exponentIndex];
         }
 
        static string ExtractFractionalPart(string input)
        {
           int dotIndex = input.IndexOf('.');
-          return dotIndex != -1 ? input.Substring(dotIndex) : string.Empty;
+          return dotIndex != -1 ? input[dotIndex..] : string.Empty;
        }
 
        static string ExtractExponentPart(string input)
@@ -51,11 +42,11 @@ namespace Json
           int exponentSignIndex = input.IndexOfAny(new[] { '+', '-' });
           if (exponentIndex != -1 && exponentSignIndex == -1)
             {
-                return input.Substring(exponentIndex);
+                return input[exponentIndex..];
             }
           else if (exponentIndex != -1 && exponentSignIndex != -1)
             {
-                return input.Substring(exponentSignIndex);
+                return input[exponentSignIndex..];
             }
 
           return string.Empty;
@@ -63,7 +54,7 @@ namespace Json
 
        static bool IsValidIntegerPart(string input)
        {
-            if (input.Length > 1 && input[0] == '0' && input[1] != '.')
+            if (input.Length > 1 && input[0] == '0')
             {
                 return false;
             }
@@ -78,7 +69,7 @@ namespace Json
                 return true;
             }
 
-            if (input[1] == 'e' || input[1] == 'E')
+            if (input.Length > 1 && (input[1] == 'e' || input[1] == 'E'))
             {
                 return false;
             }
@@ -87,17 +78,22 @@ namespace Json
             int exponentSignIndex = input.IndexOfAny(new[] { '-', '+' });
             if (exponentIndex != -1)
             {
-                string nonExponentialPart = input.Substring(0, exponentIndex);
-                nonExponentialPart += exponentSignIndex != -1 ? input.Substring(exponentSignIndex + 1) : input.Substring(exponentIndex + 1);
-                return IsValidDigits(nonExponentialPart.Substring(1));
+                string nonExponentialPart = input[..exponentIndex];
+                nonExponentialPart += exponentSignIndex != -1 ? input[(exponentSignIndex + 1) ..] : input[(exponentIndex + 1) ..];
+                return IsValidDigits(nonExponentialPart[1..]);
             }
 
-            return IsValidDigits(input.Substring(1));
+            return IsValidDigits(input[1..]);
         }
 
        static bool IsValidExponentPart(string input)
        {
-          return string.IsNullOrEmpty(input) || IsValidDigits(input.Substring(1));
+          if (input.Length > 2)
+            {
+                return false;
+            }
+
+          return string.IsNullOrEmpty(input) || IsValidDigits(input[1..]);
        }
 
        static bool IsValidDigits(string input)
@@ -110,12 +106,7 @@ namespace Json
              }
           }
 
-          return true;
-       }
-
-       static bool IsNegativeNumber(string input)
-       {
-           return input.Length > 1 && input[0] == '-';
+          return input.Length > 0;
        }
     }
 }
