@@ -4,21 +4,21 @@ namespace Json
 {
     public static class JsonNumber
     {
-       public static bool IsJsonNumber(string input)
-       {
-          if (string.IsNullOrEmpty(input))
-          {
-            return false;
-          }
+        public static bool IsJsonNumber(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return false;
+            }
 
-          input = input.Trim();
-          string number = input.StartsWith('-') ? input[1..] : input;
-          return IsValidIntegerPart(ExtractIntegerPart(number)) &&
-                 IsValidFractionalPart(ExtractFractionalPart(number)) &&
-                 IsValidExponentPart(ExtractExponentPart(number));
-       }
+            input = input.Trim();
+            string number = input.StartsWith('-') ? input[1..] : input;
+            return IsValidIntegerPart(ExtractIntegerPart(number)) &&
+                   IsValidFractionalPart(ExtractFractionalPart(number)) &&
+                   IsValidExponentPart(ExtractExponentPart(number));
+        }
 
-       static string ExtractIntegerPart(string input)
+        static string ExtractIntegerPart(string input)
         {
             int dotIndex = input.IndexOf('.');
             int exponentIndex = input.IndexOfAny(new[] { 'e', 'E' });
@@ -30,83 +30,62 @@ namespace Json
             return dotIndex != -1 ? input[..dotIndex] : input[..exponentIndex];
         }
 
-       static string ExtractFractionalPart(string input)
-       {
-          int dotIndex = input.IndexOf('.');
-          return dotIndex != -1 ? input[dotIndex..] : string.Empty;
-       }
+        static string ExtractFractionalPart(string input)
+        {
+            int dotIndex = input.IndexOf('.');
+            int exponentIndex = input.IndexOfAny(new[] { 'e', 'E' });
 
-       static string ExtractExponentPart(string input)
-       {
-          int exponentIndex = input.IndexOfAny(new[] { 'e', 'E' });
-          int exponentSignIndex = input.IndexOfAny(new[] { '+', '-' });
-          if (exponentIndex != -1 && exponentSignIndex == -1)
+            if (dotIndex != -1)
             {
-                return input[exponentIndex..];
-            }
-          else if (exponentIndex != -1 && exponentSignIndex != -1)
-            {
-                return input[exponentSignIndex..];
+                return exponentIndex != -1 && exponentIndex > dotIndex ? input[dotIndex..exponentIndex] : input[dotIndex..];
             }
 
-          return string.Empty;
-       }
+            return string.Empty;
+        }
 
-       static bool IsValidIntegerPart(string input)
-       {
+        static string ExtractExponentPart(string input)
+        {
+            int exponentIndex = input.IndexOfAny(new[] { 'e', 'E' });
+            int exponentSignIndex = input.IndexOfAny(new[] { '+', '-' });
+            if (exponentIndex != -1)
+            {
+                return exponentSignIndex != -1 && exponentSignIndex == exponentIndex + 1 ? input[exponentSignIndex..] : input[exponentIndex..];
+            }
+
+            return string.Empty;
+        }
+
+        static bool IsValidIntegerPart(string input)
+        {
             if (input.Length > 1 && input[0] == '0')
             {
                 return false;
             }
 
             return IsValidDigits(input);
-       }
-
-       static bool IsValidFractionalPart(string input)
-       {
-            if (string.IsNullOrEmpty(input))
-            {
-                return true;
-            }
-
-            if (input.Length > 1 && (input[1] == 'e' || input[1] == 'E'))
-            {
-                return false;
-            }
-
-            int exponentIndex = input.IndexOfAny(new[] { 'e', 'E' });
-            int exponentSignIndex = input.IndexOfAny(new[] { '-', '+' });
-            if (exponentIndex != -1)
-            {
-                string nonExponentialPart = input[..exponentIndex];
-                nonExponentialPart += exponentSignIndex != -1 ? input[(exponentSignIndex + 1) ..] : input[(exponentIndex + 1) ..];
-                return IsValidDigits(nonExponentialPart[1..]);
-            }
-
-            return IsValidDigits(input[1..]);
         }
 
-       static bool IsValidExponentPart(string input)
-       {
-          if (input.Length > 2)
-            {
-                return false;
-            }
+        static bool IsValidFractionalPart(string input)
+        {
+            return string.IsNullOrEmpty(input) || IsValidDigits(input[1..]);
+        }
 
+        static bool IsValidExponentPart(string input)
+        {
           return string.IsNullOrEmpty(input) || IsValidDigits(input[1..]);
-       }
+        }
 
-       static bool IsValidDigits(string input)
-       {
-          foreach (char c in input)
-          {
-             if (!char.IsDigit(c))
-             {
-               return false;
-             }
-          }
+        static bool IsValidDigits(string input)
+        {
+           foreach (char c in input)
+           {
+              if (!char.IsDigit(c))
+              {
+                return false;
+              }
+           }
 
-          return input.Length > 0;
-       }
+           return input.Length > 0;
+        }
     }
 }
