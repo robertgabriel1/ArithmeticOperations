@@ -12,14 +12,14 @@ namespace Json
             }
 
             input = input.Trim();
-            string number = input.StartsWith('-') ? input[1..] : input;
-            return IsValidIntegerPart(ExtractIntegerPart(number)) &&
-                   IsValidFractionalPart(ExtractFractionalPart(number)) &&
-                   IsValidExponentPart(ExtractExponentPart(number));
+            return IsValidIntegerPart(ExtractIntegerPart(input)) &&
+                   IsValidFractionalPart(ExtractFractionalPart(input)) &&
+                   IsValidExponentPart(ExtractExponentPart(input));
         }
 
         static string ExtractIntegerPart(string input)
         {
+            input = input.StartsWith('-') ? input[1..] : input;
             int dotIndex = input.IndexOf('.');
             int exponentIndex = input.IndexOfAny(new[] { 'e', 'E' });
             if (dotIndex == -1 && exponentIndex == -1)
@@ -46,10 +46,9 @@ namespace Json
         static string ExtractExponentPart(string input)
         {
             int exponentIndex = input.IndexOfAny(new[] { 'e', 'E' });
-            int exponentSignIndex = input.IndexOfAny(new[] { '+', '-' });
             if (exponentIndex != -1)
             {
-                return exponentSignIndex != -1 && exponentSignIndex == exponentIndex + 1 ? input[exponentSignIndex..] : input[exponentIndex..];
+                return input[exponentIndex..];
             }
 
             return string.Empty;
@@ -72,7 +71,13 @@ namespace Json
 
         static bool IsValidExponentPart(string input)
         {
-          return string.IsNullOrEmpty(input) || IsValidDigits(input[1..]);
+          if (string.IsNullOrEmpty(input))
+            {
+                return true;
+            }
+
+          const int exponentSignPosition = 2;
+          return input.Length > 1 && (input[1] == '+' || input[1] == '-') ? IsValidDigits(input[exponentSignPosition..]) : IsValidDigits(input[1..]);
         }
 
         static bool IsValidDigits(string input)
