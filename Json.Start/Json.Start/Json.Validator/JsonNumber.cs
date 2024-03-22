@@ -19,7 +19,6 @@ namespace Json
 
         static string ExtractIntegerPart(string input)
         {
-            input = input.StartsWith('-') ? input[1..] : input;
             int dotIndex = input.IndexOf('.');
             int exponentIndex = input.IndexOfAny(new[] { 'e', 'E' });
             if (dotIndex == -1 && exponentIndex == -1)
@@ -56,6 +55,7 @@ namespace Json
 
         static bool IsValidIntegerPart(string input)
         {
+            input = input.StartsWith('-') ? input[1..] : input;
             if (input.Length > 1 && input[0] == '0')
             {
                 return false;

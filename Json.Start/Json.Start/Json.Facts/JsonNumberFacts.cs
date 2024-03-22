@@ -47,6 +47,7 @@ namespace Json.Facts
         {
             Assert.False(IsJsonNumber("07"));
             Assert.False(IsJsonNumber("017"));
+            Assert.False(IsJsonNumber("-017"));
         }
 
         [Fact]
