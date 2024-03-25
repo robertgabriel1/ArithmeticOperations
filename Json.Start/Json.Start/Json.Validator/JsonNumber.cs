@@ -76,8 +76,13 @@ namespace Json
                 return true;
             }
 
-          const int exponentSignPosition = 2;
-          return input.Length > 1 && (input[1] == '+' || input[1] == '-') ? IsValidDigits(input[exponentSignPosition..]) : IsValidDigits(input[1..]);
+          input = input[1..];
+          if (input.StartsWith('-') || input.StartsWith('+'))
+            {
+                input = input[1..];
+            }
+
+          return IsValidDigits(input);
         }
 
         static bool IsValidDigits(string input)
