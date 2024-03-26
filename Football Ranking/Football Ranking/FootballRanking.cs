@@ -1,10 +1,10 @@
 ﻿namespace FootballRanking
 {
-    public class FootballArray
+    public class FootballRankingArray
     {
         private readonly CreateFootballTeam[] teams;
         private int count;
-        public FootballArray(CreateFootballTeam[] teams)
+        public FootballRankingArray(CreateFootballTeam[] teams)
         {
             this.teams = teams;
             count = 0;
@@ -21,6 +21,22 @@
             {
                 throw new InvalidOperationException("Array is full.");
             }
+        }
+
+        public void SortTeams()
+        {
+            Sort sort = new();
+            sort.SortByPoints(teams);
+        }
+
+        public CreateFootballTeam GetPosition(int position)
+        {
+            if (position >= 0 && position < count)
+            {
+                return teams[position];
+            }
+
+            throw new InvalidOperationException($"There is no team at that place.");
         }
     }
 }

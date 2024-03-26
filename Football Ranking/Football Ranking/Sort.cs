@@ -1,0 +1,34 @@
+﻿namespace FootballRanking
+{
+    public class Sort
+    {
+        private CreateFootballTeam[] teams;
+
+        public void SortByPoints(CreateFootballTeam[] teams)
+        {
+            this.teams = teams;
+            int teamsNumber = teams.Length;
+            bool swapped = true;
+
+            while (swapped)
+            {
+                swapped = false;
+                for (int i = 0; i < teamsNumber - 1; i++)
+                {
+                    if (teams[i].TeamPoints() < teams[i + 1].TeamPoints())
+                    {
+                        Swap(i, i + 1);
+                        swapped = true;
+                    }
+                }
+            }
+        }
+
+        private void Swap(int firstIndex, int secondIndex)
+        {
+            CreateFootballTeam temp = teams[firstIndex];
+            teams[firstIndex] = teams[secondIndex];
+            teams[secondIndex] = temp;
+        }
+    }
+}
