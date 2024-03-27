@@ -6,14 +6,14 @@ namespace Football_Ranking_Facts
         [Fact]
         public void Sort_ShouldSortTeamsInDescendingOrder()
         {
-            CreateFootballTeam teamA = new("Team A");
+            FootballTeam teamA = new("FCSB");
             teamA.AddPoints(3);
-            CreateFootballTeam teamB = new("Team B");
+            FootballTeam teamB = new("Dinamo");
             teamB.AddPoints(6);
-            CreateFootballTeam teamC = new("Team C");
+            FootballTeam teamC = new("Rapid");
             teamC.AddPoints(1);
-            CreateFootballTeam[] teams = { teamA, teamB, teamC };
-            Sort sort = new Sort();
+            FootballTeam[] teams = { teamA, teamB, teamC };
+            Sort sort = new();
             sort.SortByPoints(teams);
             Assert.Equal(teamB, teams[0]);
             Assert.Equal(teamA, teams[1]);

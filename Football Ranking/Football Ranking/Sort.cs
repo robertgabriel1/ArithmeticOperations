@@ -2,9 +2,9 @@
 {
     public class Sort
     {
-        private CreateFootballTeam[] teams;
+        private FootballTeam[] teams;
 
-        public void SortByPoints(CreateFootballTeam[] teams)
+        public void SortByPoints(FootballTeam[] teams)
         {
             this.teams = teams;
             int teamsNumber = teams.Length;
@@ -26,7 +26,7 @@
 
         private void Swap(int firstIndex, int secondIndex)
         {
-            CreateFootballTeam temp = teams[firstIndex];
+            FootballTeam temp = teams[firstIndex];
             teams[firstIndex] = teams[secondIndex];
             teams[secondIndex] = temp;
         }

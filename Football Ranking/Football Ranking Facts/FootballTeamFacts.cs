@@ -1,12 +1,12 @@
 using FootballRanking;
 namespace Football_Ranking_Facts
 {
-    public class CreateTeamFacts
+    public class FootballTeamFacts
     {
         [Fact]
         public void TeamPoints_ShouldIncreaseTeamPoints()
         {
-            CreateFootballTeam team = new("FCSB");
+            FootballTeam team = new("FCSB");
             team.AddPoints(1);
             Assert.Equal(1, team.TeamPoints());
         }
@@ -14,7 +14,7 @@ namespace Football_Ranking_Facts
         [Fact]
         public void TeamPoints_ShouldAccumulateTeamPoints()
         {
-            CreateFootballTeam team = new("FCSB");
+            FootballTeam team = new("FCSB");
             team.AddPoints(3);
             team.AddPoints(1);
             team.AddPoints(3);
@@ -24,7 +24,7 @@ namespace Football_Ranking_Facts
         [Fact]
         public void TeamName_ShouldReturnCorrectName()
         {
-            CreateFootballTeam team = new("Dinamo");
+            FootballTeam team = new("Dinamo");
             team.AddPoints(3);
             Assert.Equal("Dinamo", team.TeamName());
         }

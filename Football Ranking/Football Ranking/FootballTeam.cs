@@ -1,10 +1,10 @@
 ﻿namespace FootballRanking
 {
-    public class CreateFootballTeam
+    public class FootballTeam
     {
         private readonly string name;
         private int points;
-        public CreateFootballTeam(string name)
+        public FootballTeam(string name)
         {
             this.name = name;
             this.points = 0;
