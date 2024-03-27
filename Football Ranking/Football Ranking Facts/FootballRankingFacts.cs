@@ -43,19 +43,21 @@ namespace Football_Ranking_Facts
         [Fact]
         public void GetTeamFromPosition_WhenPositionIsValid_ShouldReturnTeam()
         {
-            FootballTeam[] teams = new FootballTeam[4];
+            FootballTeam[] teams = new FootballTeam[3];
             Ranking footballArray = new(teams);
             FootballTeam teamA = new("FCSB");
             teamA.AddPoints(1);
-            footballArray.AddTeam(teamA);
             FootballTeam teamB = new("Dinamo");
             teamB.AddPoints(3);
-            footballArray.AddTeam(teamB);
             FootballTeam teamC = new("Rapid");
             teamC.AddPoints(6);
+            footballArray.AddTeam(teamA);
+            footballArray.AddTeam(teamB);
             footballArray.AddTeam(teamC);
+            Sort sort = new();
+            sort.SortByPoints(teams);
             FootballTeam positionTeam = footballArray.GetTeamFromPosition(1);
-            Assert.Equal("FCSB", positionTeam.TeamName());
+            Assert.True(positionTeam.IsNameEqual("Rapid"));
             Assert.Throws<InvalidOperationException>(() => footballArray.GetTeamFromPosition(0));
         }
 
@@ -89,7 +91,7 @@ namespace Football_Ranking_Facts
             footballArray.AddTeam(teamC);
             teamC.AddPoints(6);
             footballArray.FootballMatch(teamA, teamB, 2, 1);
-            Sort sort = new Sort();
+            Sort sort = new();
             sort.SortByPoints(teams);
             Assert.Equal(1, footballArray.GetTeamPosition("Rapid"));
             Assert.Equal(2, footballArray.GetTeamPosition("FCSB"));

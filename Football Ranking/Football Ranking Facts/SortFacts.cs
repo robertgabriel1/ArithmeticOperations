@@ -18,6 +18,7 @@ namespace Football_Ranking_Facts
             Assert.Equal(teamB, teams[0]);
             Assert.Equal(teamA, teams[1]);
             Assert.Equal(teamC, teams[2]);
+            teamA.AddPoints(3);
         }
     }
 }

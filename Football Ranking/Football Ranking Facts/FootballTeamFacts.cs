@@ -8,7 +8,7 @@ namespace Football_Ranking_Facts
         {
             FootballTeam team = new("FCSB");
             team.AddPoints(1);
-            Assert.Equal(1, team.TeamPoints());
+            Assert.True(team.HasEqualPoints(1));
         }
 
         [Fact]
@@ -18,7 +18,7 @@ namespace Football_Ranking_Facts
             team.AddPoints(3);
             team.AddPoints(1);
             team.AddPoints(3);
-            Assert.Equal(7, team.TeamPoints());
+            Assert.True(team.HasEqualPoints(7));
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace Football_Ranking_Facts
         {
             FootballTeam team = new("Dinamo");
             team.AddPoints(3);
-            Assert.Equal("Dinamo", team.TeamName());
+            Assert.True(team.IsNameEqual("Dinamo"));
         }
     }
 }

@@ -31,7 +31,7 @@
 
         public FootballTeam GetTeamFromPosition(int position)
         {
-            if (position > 0 && position < count)
+            if (position > 0 && position <= count)
             {
                 return teams[position - 1];
             }
@@ -43,7 +43,7 @@
         {
             for (int i = 0; i < count; i++)
             {
-                if (teams[i].TeamName() == teamName)
+                if (teams[i].IsNameEqual(teamName))
                 {
                     return i + 1;
                 }

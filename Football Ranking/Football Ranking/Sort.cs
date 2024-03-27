@@ -15,7 +15,7 @@
                 swapped = false;
                 for (int i = 0; i < teamsNumber - 1; i++)
                 {
-                    if (teams[i].TeamPoints() < teams[i + 1].TeamPoints())
+                    if (teams[i].IsPointsLessThan(teams[i + 1]))
                     {
                         Swap(i, i + 1);
                         swapped = true;

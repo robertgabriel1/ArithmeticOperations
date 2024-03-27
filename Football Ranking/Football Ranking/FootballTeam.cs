@@ -10,19 +10,24 @@
             this.points = 0;
         }
 
-        public string TeamName()
-        {
-            return name;
-        }
-
-        public int TeamPoints()
-        {
-            return points;
-        }
-
         public void AddPoints(int points)
         {
             this.points += points;
+        }
+
+        public bool IsNameEqual(string teamName)
+        {
+           return name == teamName;
+        }
+
+        public bool IsPointsLessThan(FootballTeam nextTeam)
+        {
+            return points < nextTeam.points;
+        }
+
+        public bool HasEqualPoints(int teamPoints)
+        {
+            return points == teamPoints;
         }
     }
 }
