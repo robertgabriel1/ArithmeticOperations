@@ -36,7 +36,6 @@ namespace Football_Ranking_Facts
             FootballTeam teamC = new("Rapid");
             footballArray.AddTeam(teamA);
             footballArray.AddTeam(teamB);
-
             Assert.Throws<InvalidOperationException>(() => footballArray.AddTeam(teamC));
         }
 
@@ -54,8 +53,7 @@ namespace Football_Ranking_Facts
             footballArray.AddTeam(teamA);
             footballArray.AddTeam(teamB);
             footballArray.AddTeam(teamC);
-            Sort sort = new();
-            sort.SortByPoints(teams);
+            footballArray.SortTeams();
             FootballTeam positionTeam = footballArray.GetTeamFromPosition(1);
             Assert.True(positionTeam.IsNameEqual("Rapid"));
             Assert.Throws<InvalidOperationException>(() => footballArray.GetTeamFromPosition(0));
@@ -64,13 +62,13 @@ namespace Football_Ranking_Facts
         [Fact]
         public void GetTeamPosition_WhenPositionIsValid_ShouldReturnTeam()
         {
-            FootballTeam[] teams = new FootballTeam[4];
+            FootballTeam[] teams = new FootballTeam[3];
             Ranking footballArray = new(teams);
             FootballTeam teamA = new("FCSB");
-            footballArray.AddTeam(teamA);
             FootballTeam teamB = new("Dinamo");
-            footballArray.AddTeam(teamB);
             FootballTeam teamC = new("Rapid");
+            footballArray.AddTeam(teamA);
+            footballArray.AddTeam(teamB);
             footballArray.AddTeam(teamC);
             int positionTeam = footballArray.GetTeamPosition("FCSB");
             Assert.Equal(1, positionTeam);
@@ -82,17 +80,16 @@ namespace Football_Ranking_Facts
             FootballTeam[] teams = new FootballTeam[3];
             Ranking footballArray = new(teams);
             FootballTeam teamA = new("FCSB");
-            footballArray.AddTeam(teamA);
             teamA.AddPoints(1);
             FootballTeam teamB = new("Dinamo");
-            footballArray.AddTeam(teamB);
             teamB.AddPoints(3);
             FootballTeam teamC = new("Rapid");
-            footballArray.AddTeam(teamC);
             teamC.AddPoints(6);
-            footballArray.FootballMatch(teamA, teamB, 2, 1);
-            Sort sort = new();
-            sort.SortByPoints(teams);
+            footballArray.AddTeam(teamA);
+            footballArray.AddTeam(teamB);
+            footballArray.AddTeam(teamC);
+            footballArray.UpdatePointsAfterMatch(teamA, teamB, 2, 1);
+            footballArray.SortTeams();
             Assert.Equal(1, footballArray.GetTeamPosition("Rapid"));
             Assert.Equal(2, footballArray.GetTeamPosition("FCSB"));
             Assert.Equal(3, footballArray.GetTeamPosition("Dinamo"));
