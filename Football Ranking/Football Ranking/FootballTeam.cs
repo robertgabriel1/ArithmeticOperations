@@ -15,19 +15,9 @@
             this.points += points;
         }
 
-        public bool IsNameEqual(string teamName)
-        {
-           return name == teamName;
-        }
-
         public bool IsPointsLessThan(FootballTeam nextTeam)
         {
             return points < nextTeam.points;
-        }
-
-        public bool HasEqualPoints(int teamPoints)
-        {
-            return points == teamPoints;
         }
     }
 }

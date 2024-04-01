@@ -2,28 +2,23 @@
 {
     public class Ranking
     {
-        private readonly FootballTeam[] teams;
+        private FootballTeam[] teams;
         private int count;
-        public Ranking(FootballTeam[] teams)
+        public Ranking()
         {
-            this.teams = teams;
+            teams = new FootballTeam[0];
             count = 0;
         }
 
         public void AddTeam(FootballTeam team)
         {
-            if (count < teams.Length)
-            {
-                teams[count] = team;
-                count++;
-            }
-            else
-            {
-                throw new InvalidOperationException("Array is full.");
-            }
+            Array.Resize(ref teams, count + 1);
+            teams[count] = team;
+            count++;
+            SortTeams();
         }
 
-        public void SortTeams()
+        private void SortTeams()
         {
             Sort sort = new();
             sort.SortByPoints(teams);
@@ -39,11 +34,11 @@
             throw new InvalidOperationException($"There is no team at that place.");
         }
 
-        public int GetTeamPosition(string teamName)
+        public int GetTeamPosition(FootballTeam teamName)
         {
             for (int i = 0; i < count; i++)
             {
-                if (teams[i].IsNameEqual(teamName))
+                if (teams[i] == teamName)
                 {
                     return i + 1;
                 }
@@ -52,15 +47,27 @@
             throw new InvalidOperationException($"There is no team named {teamName}.");
         }
 
-        public void UpdatePointsAfterMatch(FootballTeam homeTeam, FootballTeam awayTeam, int goalsHomeTeam, int goalsAwayTeam)
+        public void UpdatePointsAfterMatch(FootballMatch match, FootballTeam homeTeam, FootballTeam awayTeam)
         {
-            FootballMatch check = new FootballMatch(homeTeam, awayTeam);
-            if (!check.CheckTeamPresence(teams))
+            if (!TeamExists(homeTeam) || !TeamExists(awayTeam))
             {
-                throw new InvalidOperationException("One or both teams are not present in the ranking.");
+                throw new InvalidOperationException($"One or both teams are not present in the ranking.");
             }
 
-            check.UpdatePoints(goalsHomeTeam, goalsAwayTeam);
+            match.UpdatePoints();
+            SortTeams();
+        }
+
+        private bool TeamExists(FootballTeam team)
+        {
+            foreach (FootballTeam currentTeam in teams)
+            {
+                if (currentTeam == team)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

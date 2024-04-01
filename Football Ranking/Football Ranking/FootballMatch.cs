@@ -4,32 +4,17 @@
     {
         private readonly FootballTeam homeTeam;
         private readonly FootballTeam awayTeam;
-        public FootballMatch(FootballTeam homeTeam, FootballTeam awayTeam)
+        private readonly int goalsHomeTeam;
+        private readonly int goalsAwayTeam;
+        public FootballMatch(FootballTeam homeTeam, FootballTeam awayTeam, int goalsHomeTeam, int goalsAwayTeam)
         {
             this.homeTeam = homeTeam;
             this.awayTeam = awayTeam;
+            this.goalsHomeTeam = goalsHomeTeam;
+            this.goalsAwayTeam = goalsAwayTeam;
         }
 
-        public bool CheckTeamPresence(FootballTeam[] teams)
-        {
-            bool homeTeamExists = false;
-            bool awayTeamExists = false;
-            foreach (FootballTeam team in teams)
-            {
-                if (team == homeTeam)
-                {
-                    homeTeamExists = true;
-                }
-                else if (team == awayTeam)
-                {
-                    awayTeamExists = true;
-                }
-            }
-
-            return homeTeamExists && awayTeamExists;
-        }
-
-        public void UpdatePoints(int goalsHomeTeam, int goalsAwayTeam)
+        public void UpdatePoints()
         {
             int pointsForVictory = 3;
             if (goalsHomeTeam > goalsAwayTeam)

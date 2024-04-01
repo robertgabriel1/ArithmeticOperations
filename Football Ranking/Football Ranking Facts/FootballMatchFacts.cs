@@ -4,25 +4,15 @@ namespace Football_Ranking_Facts
     public class FootballMatchFacts
     {
         [Fact]
-        public void CheckTeamPresence_BothTeamsPresent_ShouldReturnTrue()
+        public void UpdatePoints()
         {
             FootballTeam teamA = new("FCSB");
-            FootballTeam teamB = new FootballTeam("Dinamo");
-            FootballTeam[] teams = { teamA, teamB };
-            FootballMatch footballMatch = new FootballMatch(teamA, teamB);
-            bool result = footballMatch.CheckTeamPresence(teams);
-            Assert.True(result);
-        }
-
-        [Fact]
-        public void CheckTeamPresence_OneTeamMissing_ShouldReturnFalse()
-        {
-            FootballTeam teamA = new("FCSB");
-            FootballTeam teamB = new FootballTeam("Dinamo");
-            FootballTeam[] teams = { teamA };
-            FootballMatch footballMatch = new FootballMatch(teamA, teamB);
-            bool result = footballMatch.CheckTeamPresence(teams);
-            Assert.False(result);
+            FootballTeam teamB = new("Dinamo");
+            teamA.AddPoints(2);
+            teamB.AddPoints(3);
+            FootballMatch footballMatch = new(teamA, teamB, 2 , 1);
+            footballMatch.UpdatePoints();
+            Assert.True(teamB.IsPointsLessThan(teamA));
         }
     }
 }

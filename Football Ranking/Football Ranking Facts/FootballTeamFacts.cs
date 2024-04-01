@@ -6,27 +6,11 @@ namespace Football_Ranking_Facts
         [Fact]
         public void AddPoints_ShouldIncreaseTeamPoints()
         {
-            FootballTeam team = new("FCSB");
-            team.AddPoints(1);
-            Assert.True(team.HasEqualPoints(1));
-        }
-
-        [Fact]
-        public void AddPoints_ShouldAccumulateTeamPoints()
-        {
-            FootballTeam team = new("FCSB");
-            team.AddPoints(3);
-            team.AddPoints(1);
-            team.AddPoints(3);
-            Assert.True(team.HasEqualPoints(7));
-        }
-
-        [Fact]
-        public void IsNameEqual_ShouldReturnCorrectName()
-        {
-            FootballTeam team = new("Dinamo");
-            team.AddPoints(3);
-            Assert.True(team.IsNameEqual("Dinamo"));
+            FootballTeam teamA = new("FCSB");
+            teamA.AddPoints(1);
+            FootballTeam teamB = new("Dinamo");
+            teamB.AddPoints(2);
+            Assert.True(teamA.IsPointsLessThan(teamB));
         }
 
         [Fact]
