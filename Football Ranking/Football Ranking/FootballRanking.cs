@@ -3,18 +3,15 @@
     public class Ranking
     {
         private FootballTeam[] teams;
-        private int count;
         public Ranking()
         {
             teams = new FootballTeam[0];
-            count = 0;
         }
 
         public void AddTeam(FootballTeam team)
         {
-            Array.Resize(ref teams, count + 1);
-            teams[count] = team;
-            count++;
+            Array.Resize(ref teams, teams.Length + 1);
+            teams[teams.Length - 1] = team;
             SortTeams();
         }
 
@@ -26,7 +23,7 @@
 
         public FootballTeam GetTeamFromPosition(int position)
         {
-            if (position > 0 && position <= count)
+            if (position > 0 && position <= teams.Length)
             {
                 return teams[position - 1];
             }
@@ -34,40 +31,28 @@
             throw new InvalidOperationException($"There is no team at that place.");
         }
 
-        public int GetTeamPosition(FootballTeam teamName)
+        public int GetTeamPosition(FootballTeam team)
         {
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < teams.Length; i++)
             {
-                if (teams[i] == teamName)
+                if (teams[i] == team)
                 {
                     return i + 1;
                 }
             }
 
-            throw new InvalidOperationException($"There is no team named {teamName}.");
+            return -1;
         }
 
         public void UpdatePointsAfterMatch(FootballMatch match, FootballTeam homeTeam, FootballTeam awayTeam)
         {
-            if (!TeamExists(homeTeam) || !TeamExists(awayTeam))
+            if (GetTeamPosition(homeTeam) == -1 || GetTeamPosition(awayTeam) == -1)
             {
                 throw new InvalidOperationException($"One or both teams are not present in the ranking.");
             }
 
             match.UpdatePoints();
             SortTeams();
-        }
-
-        private bool TeamExists(FootballTeam team)
-        {
-            foreach (FootballTeam currentTeam in teams)
-            {
-                if (currentTeam == team)
-                {
-                    return true;
-                }
-            }
-            return false;
         }
     }
 }
