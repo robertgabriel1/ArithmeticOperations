@@ -69,8 +69,7 @@ namespace Football_Ranking_Facts
             footballArray.AddTeam(teamA);
             footballArray.AddTeam(teamB);
             footballArray.AddTeam(teamC);
-            FootballMatch match = new(teamA, teamB, 2 , 1);
-            footballArray.UpdatePointsAfterMatch(match, teamA, teamB);
+            footballArray.UpdatePointsAfterMatch(teamA, teamB, 2, 1);
             Assert.Equal(1, footballArray.GetTeamPosition(teamC));
             Assert.Equal(2, footballArray.GetTeamPosition(teamA));
             Assert.Equal(3, footballArray.GetTeamPosition(teamB));
