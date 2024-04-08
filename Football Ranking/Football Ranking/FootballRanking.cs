@@ -18,18 +18,17 @@
         private void SortTeams()
         {
             int teamsNumber = teams.Length;
-            bool swapped = true;
-            while (swapped)
+            for (int i = 1; i < teamsNumber; i++)
             {
-               swapped = false;
-               for (int i = 0; i < teamsNumber - 1; i++)
-               {
-                 if (teams[i].IsPointsLessThan(teams[i + 1]))
-                  {
-                        (teams[i + 1], teams[i]) = (teams[i], teams[i + 1]);
-                        swapped = true;
-                  }
-               }
+                FootballTeam temp = teams[i];
+                for (int j = i - 1; j >= 0; j--)
+                {
+                    if (temp.IsPointsLessThan(teams[j]))
+                    {
+                        teams[j + 1] = teams[j];
+                        teams[j] = temp;
+                    }
+                }
             }
         }
 
