@@ -29,7 +29,6 @@ namespace RangeTests
             ranges.AddRange(range3);
             ranges.RemoveRange(range1);
             Assert.Equal(2, ranges.GetLength());
-
         }
 
         [Fact]

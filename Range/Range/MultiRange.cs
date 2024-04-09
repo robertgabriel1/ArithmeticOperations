@@ -10,26 +10,18 @@
 
         public void AddRange(Range range)
         {
-            Range[] temp = new Range[ranges.Length + 1];
-            for (int i = 0; i < ranges.Length; i++)
-            {
-                temp[i] = ranges[i];
-            }
-
-            ranges = temp;
+            Array.Resize(ref ranges, ranges.Length + 1);
             ranges[^1] = range;
         }
         
         public void RemoveRange(Range range)
         {
-            for (int i = 0; i < ranges.Length; i++)
+            int index = Array.IndexOf(ranges, range);
+            if (index != -1)
             {
-                if (ranges[i] == range)
+                for (int j = index + 1; j < ranges.Length; j++)
                 {
-                    for (int j = i + 1; j < ranges.Length; j++)
-                    {
-                        ranges[j - 1] = ranges[j];
-                    }
+                    ranges[j - 1] = ranges[j];
                 }
             }
 
