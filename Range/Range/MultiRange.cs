@@ -1,4 +1,6 @@
-﻿namespace RangeTask
+﻿using System;
+
+namespace RangeTask
 {
     public class MultiRange
     {
@@ -10,37 +12,49 @@
 
         public void AddRange(Range range)
         {
-            foreach (Range r in ranges)
+            bool merged = false;
+            for (int i = 0; i < ranges.Length; i++)
             {
-                if (r.IsSameRange(range))
+                if (ranges[i].CanBeMerged(range))
                 {
-                    throw new ArgumentException("The range already exists");
+                    ranges[i] = ranges[i].Merge(range);
+                    merged = true;
+                    break;
                 }
             }
 
+            if (!merged && range.IsValidRange())
+            {
             Array.Resize(ref ranges, ranges.Length + 1);
             ranges[^1] = range;
+            }
         }
-        
+
         public void RemoveRange(Range range)
         {
-            int index = Array.IndexOf(ranges, range);
-            if (index != -1)
+            for (int i = 0; i < ranges.Length; i++)
             {
-                for (int j = index + 1; j < ranges.Length; j++)
+                if (ranges[i].IsCovering(range))
                 {
-                    ranges[j - 1] = ranges[j];
+                    Range leftRange = ranges[i].SplitLeft(range);
+                    Range rightRange = ranges[i].SplitRight(range);
+                    for (int j = i + 1; j < ranges.Length; j++)
+                    {
+                        ranges[j - 1] = ranges[j];
+                    }
+                    Array.Resize(ref ranges, ranges.Length - 1);
+                    AddRange(leftRange);
+                    AddRange(rightRange);
+                    break;
                 }
             }
-
-            Array.Resize(ref ranges, ranges.Length - 1);
         }
 
         public bool Query(Range range)
         {
             foreach (Range r in ranges)
             {
-                if (r.IsCoveredBy(range))
+                if (r.IsCovering(range))
                 {
                     return true;
                 }

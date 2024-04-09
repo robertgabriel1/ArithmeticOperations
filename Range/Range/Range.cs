@@ -8,22 +8,40 @@ namespace RangeTask
         private readonly int end;
         public Range(int start, int end)
         {
-            if (start > end)
-            {
-                throw new ArgumentException("Start must be less than or equal to end.");
-            }
             this.start = start;
             this.end = end;
         }
 
-        public bool IsCoveredBy(Range range)
+        public bool IsCovering(Range range)
         {
-            return start <= range.start && end >= range.end;
+            return range.start >= start && range.end <= end;
         }
 
-        public bool IsSameRange(Range range)
+        public bool CanBeMerged(Range range)
         {
-            return start == range.start && end == range.end;
+            return (range.start >= start && range.start <= end) || (range.end >= start && range.end <= end);
+        }
+
+        public Range Merge(Range range)
+        {
+            int maxStart = start > range.start ? range.start : start;
+            int maxEnd = end > range.end ? end : range.end;
+            return new Range(maxStart, maxEnd);
+        }
+
+        public Range SplitLeft(Range range)
+        {
+            return new Range(start, range.start - 1);
+        }
+
+        public Range SplitRight(Range range)
+        {
+            return new Range(range.end + 1, end);
+        }
+
+        public bool IsValidRange()
+        {
+            return start <= end;
         }
     }
 }
