@@ -10,6 +10,14 @@
 
         public void AddRange(Range range)
         {
+            foreach (Range r in ranges)
+            {
+                if (r.IsSameRange(range))
+                {
+                    throw new ArgumentException("The range already exists");
+                }
+            }
+
             Array.Resize(ref ranges, ranges.Length + 1);
             ranges[^1] = range;
         }
@@ -32,7 +40,7 @@
         {
             foreach (Range r in ranges)
             {
-                if (r.Covers(range))
+                if (r.IsCoveredBy(range))
                 {
                     return true;
                 }

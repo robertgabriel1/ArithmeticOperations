@@ -18,6 +18,17 @@ namespace RangeTests
         }
 
         [Fact]
+        public void AddRange_AddingExistingRange_ShouldThrowError()
+        {
+            MultiRange ranges = new();
+            RangeTask.Range range1 = new(1, 5);
+            RangeTask.Range range2 = new(1, 5);
+            ranges.AddRange(range1);
+            var exception = Assert.Throws<ArgumentException>(() => ranges.AddRange(range2));
+            Assert.Equal("The range already exists", exception.Message);
+        }
+
+        [Fact]
         public void RemoveRange_ShouldDecreaseLength()
         {
             MultiRange ranges = new();

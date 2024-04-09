@@ -16,9 +16,14 @@ namespace RangeTask
             this.end = end;
         }
 
-        public bool Covers(Range range)
+        public bool IsCoveredBy(Range range)
         {
             return start <= range.start && end >= range.end;
+        }
+
+        public bool IsSameRange(Range range)
+        {
+            return start == range.start && end == range.end;
         }
     }
 }
