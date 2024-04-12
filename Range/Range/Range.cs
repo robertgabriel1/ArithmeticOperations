@@ -8,6 +8,10 @@ namespace RangeTask
         private readonly int end;
         public Range(int start, int end)
         {
+            if (start > end)
+            {
+                throw new ArgumentException("Start must be less or equal with end.");
+            }
             this.start = start;
             this.end = end;
         }
@@ -17,9 +21,14 @@ namespace RangeTask
             return range.start >= start && range.end <= end;
         }
 
-        public bool CanBeMerged(Range range)
+        public bool IsOverlapping(Range range)
         {
-            return (range.start >= start && range.start <= end) || (range.end >= start && range.end <= end);
+            return end >= range.start && start <= range.end;
+        }
+
+        public bool IsIdenticalRange(Range range)
+        {
+            return start == range.start && end == range.end;
         }
 
         public Range Merge(Range range)
@@ -29,19 +38,12 @@ namespace RangeTask
             return new Range(maxStart, maxEnd);
         }
 
-        public Range SplitLeft(Range range)
+        public Range[] Split(Range range)
         {
-            return new Range(start, range.start - 1);
-        }
-
-        public Range SplitRight(Range range)
-        {
-            return new Range(range.end + 1, end);
-        }
-
-        public bool IsValidRange()
-        {
-            return start <= end;
+            Range[] result = new Range[2];
+            result[0] = new Range(start, range.start - 1);
+            result[1] = new Range(range.end + 1, end);
+            return result;
         }
     }
 }

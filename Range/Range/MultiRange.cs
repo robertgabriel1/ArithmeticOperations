@@ -15,7 +15,7 @@ namespace RangeTask
             bool merged = false;
             for (int i = 0; i < ranges.Length; i++)
             {
-                if (ranges[i].CanBeMerged(range))
+                if (ranges[i].IsOverlapping(range))
                 {
                     ranges[i] = ranges[i].Merge(range);
                     merged = true;
@@ -23,30 +23,42 @@ namespace RangeTask
                 }
             }
 
-            if (!merged && range.IsValidRange())
+            if (!merged)
             {
-            Array.Resize(ref ranges, ranges.Length + 1);
-            ranges[^1] = range;
+                Array.Resize(ref ranges, ranges.Length + 1);
+                ranges[^1] = range;
             }
         }
 
         public void RemoveRange(Range range)
         {
-            for (int i = 0; i < ranges.Length; i++)
+            foreach (Range r in ranges)
             {
-                if (ranges[i].IsCovering(range))
+                if (r.IsOverlapping(range) && !r.IsIdenticalRange(range))
                 {
-                    Range leftRange = ranges[i].SplitLeft(range);
-                    Range rightRange = ranges[i].SplitRight(range);
-                    for (int j = i + 1; j < ranges.Length; j++)
-                    {
-                        ranges[j - 1] = ranges[j];
-                    }
-                    Array.Resize(ref ranges, ranges.Length - 1);
-                    AddRange(leftRange);
-                    AddRange(rightRange);
+                    Range[] leftRange = r.Split(range);
+                    ShiftToReplace();
+                    AddRange(leftRange[0]);
+                    AddRange(leftRange[1]);
                     break;
                 }
+                else if (r.IsIdenticalRange(range))
+                {
+                    ShiftToReplace();
+                    break;
+                }
+            }
+        }
+
+        public void ShiftToReplace()
+        {
+            for (int i = 0; i < ranges.Length; i++)
+            {
+                for (int j = i + 1; j < ranges.Length; j++)
+                {
+                    ranges[j - 1] = ranges[j];
+                }
+                Array.Resize(ref ranges, ranges.Length - 1);
             }
         }
 
