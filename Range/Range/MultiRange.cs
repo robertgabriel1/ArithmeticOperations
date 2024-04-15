@@ -15,7 +15,7 @@ namespace RangeTask
             bool merged = false;
             for (int i = 0; i < ranges.Length; i++)
             {
-                if (ranges[i].IsOverlapping(range))
+                if (ranges[i].Merge(range) != null)
                 {
                     ranges[i] = ranges[i].Merge(range);
                     merged = true;
@@ -32,34 +32,34 @@ namespace RangeTask
 
         public void RemoveRange(Range range)
         {
-            foreach (Range r in ranges)
+            for (int i = 0; i < ranges.Length; i++)
             {
-                if (r.IsOverlapping(range) && !r.IsIdenticalRange(range))
+                if (ranges[i].Split(range) != null)
                 {
-                    Range[] leftRange = r.Split(range);
-                    ShiftToReplace();
-                    AddRange(leftRange[0]);
-                    AddRange(leftRange[1]);
-                    break;
-                }
-                else if (r.IsIdenticalRange(range))
-                {
-                    ShiftToReplace();
-                    break;
+                    if (ranges[i].IsIdenticalRange(range))
+                    {
+                        ShiftElements(i);
+                        break;
+                    }
+                    else if (!ranges[i].IsIdenticalRange(range))
+                    {
+                        Range[] leftRange = ranges[i].Split(range);
+                        ShiftElements(i);
+                        AddRange(leftRange[0]);
+                        AddRange(leftRange[1]);
+                        break;
+                    }
                 }
             }
         }
 
-        public void ShiftToReplace()
+        public void ShiftElements(int i)
         {
-            for (int i = 0; i < ranges.Length; i++)
+            for (int j = i + 1; j < ranges.Length; j++)
             {
-                for (int j = i + 1; j < ranges.Length; j++)
-                {
-                    ranges[j - 1] = ranges[j];
-                }
-                Array.Resize(ref ranges, ranges.Length - 1);
+                ranges[j - 1] = ranges[j];
             }
+            Array.Resize(ref ranges, ranges.Length - 1);
         }
 
         public bool Query(Range range)

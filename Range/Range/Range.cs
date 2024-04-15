@@ -21,28 +21,33 @@ namespace RangeTask
             return range.start >= start && range.end <= end;
         }
 
-        public bool IsOverlapping(Range range)
-        {
-            return end >= range.start && start <= range.end;
-        }
-
         public bool IsIdenticalRange(Range range)
         {
             return start == range.start && end == range.end;
         }
 
-        public Range Merge(Range range)
+        public Range? Merge(Range range)
         {
+            if (!(end >= range.start && start <= range.end))
+            {
+                return null;
+            }
+
             int maxStart = start > range.start ? range.start : start;
             int maxEnd = end > range.end ? end : range.end;
             return new Range(maxStart, maxEnd);
         }
 
-        public Range[] Split(Range range)
+        public Range[]? Split(Range range)
         {
+            if (!(end >= range.start && start <= range.end))
+            {
+                return null;
+            }
+
             Range[] result = new Range[2];
-            result[0] = new Range(start, range.start - 1);
-            result[1] = new Range(range.end + 1, end);
+            result[0] = start == range.start ? null : new Range(start, range.start - 1);
+            result[1] = end == range.end ? null : new Range(range.end + 1, end);
             return result;
         }
     }
