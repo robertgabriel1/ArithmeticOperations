@@ -13,13 +13,17 @@ namespace RangeTask
         public void AddRange(Range range)
         {
             bool merged = false;
-            for (int i = 0; i < ranges.Length; i++)
+            foreach (Range r in ranges)
             {
-                if (ranges[i].Merge(range) != null)
+                if (r.MergeInto(range))
                 {
-                    ranges[i] = ranges[i].Merge(range);
+                    if (!merged)
+                    {
+                        Array.Resize(ref ranges, ranges.Length + 1);
+                        ranges[^1] = range;
+                    }
+                    RemoveRange(r);
                     merged = true;
-                    break;
                 }
             }
 
@@ -36,19 +40,16 @@ namespace RangeTask
             {
                 if (ranges[i].Split(range) != null)
                 {
-                    if (ranges[i].IsIdenticalRange(range))
+                    Range[] rangesLeft = ranges[i].Split(range);
+                    ShiftElements(i);
+                    foreach (Range rangeLeft in rangesLeft)
                     {
-                        ShiftElements(i);
-                        break;
+                        if (rangeLeft != null)
+                        {
+                            AddRange(rangeLeft);
+                        }
                     }
-                    else if (!ranges[i].IsIdenticalRange(range))
-                    {
-                        Range[] leftRange = ranges[i].Split(range);
-                        ShiftElements(i);
-                        AddRange(leftRange[0]);
-                        AddRange(leftRange[1]);
-                        break;
-                    }
+                    break;
                 }
             }
         }
@@ -66,7 +67,7 @@ namespace RangeTask
         {
             foreach (Range r in ranges)
             {
-                if (r.IsCovering(range))
+                if (r.IsOverlapping(range))
                 {
                     return true;
                 }

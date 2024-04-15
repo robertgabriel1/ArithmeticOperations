@@ -4,8 +4,8 @@ namespace RangeTask
 {
     public class Range
     {
-        private readonly int start;
-        private readonly int end;
+        private int start;
+        private int end;
         public Range(int start, int end)
         {
             if (start > end)
@@ -16,31 +16,26 @@ namespace RangeTask
             this.end = end;
         }
 
-        public bool IsCovering(Range range)
+        public bool IsOverlapping(Range range)
         {
-            return range.start >= start && range.end <= end;
+            return end >= range.start && start <= range.end;
         }
 
-        public bool IsIdenticalRange(Range range)
+        public bool MergeInto(Range range)
         {
-            return start == range.start && end == range.end;
-        }
-
-        public Range? Merge(Range range)
-        {
-            if (!(end >= range.start && start <= range.end))
+            if (!IsOverlapping(range))
             {
-                return null;
+                return false;
             }
 
-            int maxStart = start > range.start ? range.start : start;
-            int maxEnd = end > range.end ? end : range.end;
-            return new Range(maxStart, maxEnd);
+            range.start = start < range.start ? start : range.start;
+            range.end = end < range.end ? range.end : end;
+            return true;
         }
 
         public Range[]? Split(Range range)
         {
-            if (!(end >= range.start && start <= range.end))
+            if (!IsOverlapping(range))
             {
                 return null;
             }

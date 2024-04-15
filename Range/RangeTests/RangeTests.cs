@@ -8,7 +8,7 @@ namespace RangeTests
         {
             RangeTask.Range range1 = new(1, 5);
             RangeTask.Range range2 = new(2, 4);
-            Assert.True(range1.IsCovering(range2));
+            Assert.True(range1.IsOverlapping(range2));
         }
 
         [Fact]
@@ -16,7 +16,7 @@ namespace RangeTests
         {
             RangeTask.Range range1 = new(1, 5);
             RangeTask.Range range2 = new(6, 10);
-            Assert.False(range1.IsCovering(range2));
+            Assert.False(range1.IsOverlapping(range2));
         }
     }
 }
