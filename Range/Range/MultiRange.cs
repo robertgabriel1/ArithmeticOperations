@@ -13,14 +13,16 @@ namespace RangeTask
         public void AddRange(Range range)
         {
             bool merged = false;
+
             foreach (Range r in ranges)
             {
-                if (r.MergeInto(range))
+                (bool result, Range mergedRange) = r.MergeInto(range);
+                if (result)
                 {
                     if (!merged)
                     {
                         Array.Resize(ref ranges, ranges.Length + 1);
-                        ranges[^1] = range;
+                        ranges[^1] = mergedRange;
                     }
                     RemoveRange(r);
                     merged = true;
@@ -38,9 +40,9 @@ namespace RangeTask
         {
             for (int i = 0; i < ranges.Length; i++)
             {
-                if (ranges[i].Split(range) != null)
+                (bool result, Range[] rangesLeft) = ranges[i].Split(range);
+                if (result)
                 {
-                    Range[] rangesLeft = ranges[i].Split(range);
                     ShiftElements(i);
                     foreach (Range rangeLeft in rangesLeft)
                     {

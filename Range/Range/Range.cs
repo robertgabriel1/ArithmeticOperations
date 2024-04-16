@@ -21,29 +21,31 @@ namespace RangeTask
             return end >= range.start && start <= range.end;
         }
 
-        public bool MergeInto(Range range)
+        public (bool result, Range merged) MergeInto(Range range)
         {
             if (!IsOverlapping(range))
             {
-                return false;
+                return (false, new Range(-1, -1));
             }
 
-            range.start = start < range.start ? start : range.start;
-            range.end = end < range.end ? range.end : end;
-            return true;
+            int newStart = start < range.start ? start : range.start;
+            int newEnd = end > range.end ? end : range.end;
+
+            Range mergedRange = new Range(newStart, newEnd);
+            return (true, mergedRange);
         }
 
-        public Range[]? Split(Range range)
+        public (bool result, Range[] rangesLeft) Split(Range range)
         {
             if (!IsOverlapping(range))
             {
-                return null;
+                return (false, new Range[0]);
             }
 
             Range[] result = new Range[2];
             result[0] = start == range.start ? null : new Range(start, range.start - 1);
             result[1] = end == range.end ? null : new Range(range.end + 1, end);
-            return result;
+            return (true, result);
         }
     }
 }
