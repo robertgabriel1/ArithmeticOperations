@@ -18,7 +18,7 @@ namespace RangeTests
         }
 
         [Fact]
-        public void AddRange_Test()
+        public void AddRange_CombineIntoSingleRange()
         {
             MultiRange ranges = new();
             RangeTask.Range range1 = new(0, 2);
@@ -72,6 +72,19 @@ namespace RangeTests
             Assert.True(ranges.Query(new RangeTask.Range(2, 3)));
             Assert.True(ranges.Query(new RangeTask.Range(3, 5)));
             Assert.False(ranges.Query(new RangeTask.Range(6, 18)));
+        }
+
+        [Fact]
+        public void Covers_NewRange()
+        {
+            MultiRange ranges = new MultiRange();
+            RangeTask.Range range1 = new RangeTask.Range(0, 2);
+            RangeTask.Range range2 = new RangeTask.Range(4, 6);
+            RangeTask.Range range3 = new RangeTask.Range(1, 5);
+            ranges.AddRange(range1);
+            ranges.AddRange(range2);
+            ranges.AddRange(range3);
+            Assert.True(ranges.Query(new RangeTask.Range(0, 6)));
         }
     }
 }

@@ -31,7 +31,6 @@
             return end >= range.start && start <= range.end;
         }
 
-
         public MergeResult MergeInto(Range range)
         {
             if (!IsOverlapping(range))
