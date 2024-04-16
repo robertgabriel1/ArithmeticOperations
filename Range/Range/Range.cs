@@ -1,7 +1,17 @@
-﻿using System;
-
-namespace RangeTask
+﻿namespace RangeTask
 {
+        public struct MergeResult
+        {
+            public bool Result;
+            public Range Merged;
+
+            public MergeResult(bool result, Range merged)
+            {
+                Result = result;
+                Merged = merged;
+            }
+        }
+
     public class Range
     {
         private int start;
@@ -21,18 +31,19 @@ namespace RangeTask
             return end >= range.start && start <= range.end;
         }
 
-        public (bool result, Range merged) MergeInto(Range range)
+
+        public MergeResult MergeInto(Range range)
         {
             if (!IsOverlapping(range))
             {
-                return (false, new Range(-1, -1));
+                return new MergeResult(false, new Range(-1, -1));
             }
 
             int newStart = start < range.start ? start : range.start;
             int newEnd = end > range.end ? end : range.end;
 
             Range mergedRange = new Range(newStart, newEnd);
-            return (true, mergedRange);
+            return new MergeResult(true, mergedRange);
         }
 
         public (bool result, Range[] rangesLeft) Split(Range range)

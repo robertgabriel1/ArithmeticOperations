@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RangeTask
+﻿namespace RangeTask
 {
     public class MultiRange
     {
@@ -16,13 +14,13 @@ namespace RangeTask
 
             foreach (Range r in ranges)
             {
-                (bool result, Range mergedRange) = r.MergeInto(range);
-                if (result)
+                MergeResult mergeResult = r.MergeInto(range);
+                if (mergeResult.Result)
                 {
                     if (!merged)
                     {
                         Array.Resize(ref ranges, ranges.Length + 1);
-                        ranges[^1] = mergedRange;
+                        ranges[^1] = mergeResult.Merged;
                     }
                     RemoveRange(r);
                     merged = true;
