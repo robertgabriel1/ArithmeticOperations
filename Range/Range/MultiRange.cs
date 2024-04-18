@@ -20,8 +20,10 @@
                     if (!merged)
                     {
                         Array.Resize(ref ranges, ranges.Length + 1);
-                        ranges[^1] = mergeResult.Merged;
                     }
+
+                    range = mergeResult.Merged;
+                    ranges[^1] = range;
                     RemoveRange(r);
                     merged = true;
                 }
@@ -49,6 +51,7 @@
                             AddRange(rangeLeft);
                         }
                     }
+
                     break;
                 }
             }

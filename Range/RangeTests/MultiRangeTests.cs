@@ -86,5 +86,19 @@ namespace RangeTests
             ranges.AddRange(range3);
             Assert.True(ranges.Query(new RangeTask.Range(0, 6)));
         }
+
+        [Fact]
+        public void Remove_NewRange()
+        {
+            MultiRange ranges = new MultiRange();
+            RangeTask.Range range1 = new RangeTask.Range(0, 2);
+            RangeTask.Range range2 = new RangeTask.Range(4, 6);
+            RangeTask.Range range3 = new RangeTask.Range(1, 5);
+            ranges.AddRange(range1);
+            ranges.AddRange(range2);
+            ranges.AddRange(range3);
+            ranges.RemoveRange(new RangeTask.Range(0, 6));
+            Assert.Equal(0, ranges.GetLength());
+        }
     }
 }
