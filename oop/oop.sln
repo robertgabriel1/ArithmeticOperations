@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RangeValidator", "RangeValidator\RangeValidator.csproj", "{9FD68326-3E0C-40F3-84D5-CDD84A302EB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RangeValidatorFacts", "RangeValidatorFacts\RangeValidatorFacts.csproj", "{607F04CE-6DEB-4831-A883-5DD9AFE95FB0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9FD68326-3E0C-40F3-84D5-CDD84A302EB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FD68326-3E0C-40F3-84D5-CDD84A302EB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FD68326-3E0C-40F3-84D5-CDD84A302EB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FD68326-3E0C-40F3-84D5-CDD84A302EB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{607F04CE-6DEB-4831-A883-5DD9AFE95FB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{607F04CE-6DEB-4831-A883-5DD9AFE95FB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{607F04CE-6DEB-4831-A883-5DD9AFE95FB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{607F04CE-6DEB-4831-A883-5DD9AFE95FB0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F94754AA-4994-4E72-B2BB-A2D55C33771B}
+	EndGlobalSection
+EndGlobal
