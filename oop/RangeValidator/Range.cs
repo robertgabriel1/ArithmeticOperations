@@ -11,17 +11,9 @@
         }
         public bool Match(string text)
         {
-            if (string.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(text) || text[0] < Start || text[0] > End)
             {
                 return false;
-            }
-
-            foreach (char c in text)
-            {
-                if (c < Start || c > End)
-                {
-                    return false;
-                }
             }
 
             return true;
