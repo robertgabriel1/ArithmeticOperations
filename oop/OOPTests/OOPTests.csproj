@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RangeValidator\RangeValidator.csproj" />
+    <ProjectReference Include="..\OOP\OOP.csproj" />
   </ItemGroup>
 
 </Project>

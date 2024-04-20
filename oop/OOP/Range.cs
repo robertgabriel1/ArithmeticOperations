@@ -1,6 +1,6 @@
-﻿namespace RangeValidator
+﻿namespace OOP
 {
-    public class Range
+    public class Range : IPattern
     {
         private readonly char Start;
         private readonly char End;

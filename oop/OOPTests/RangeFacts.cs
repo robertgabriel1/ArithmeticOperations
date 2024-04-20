@@ -1,11 +1,11 @@
-namespace RangeValidatorFacts
+namespace OOPTests
 {
-    public class RangeValidatorFacts
+    public class RangeFacts
     {
         [Fact]
         public void Match_ShouldReturnExpectedResult()
         {
-            RangeValidator.Range range = new('a', 'f');
+            OOP.Range range = new('a', 'f');
             Assert.True(range.Match("abc"));
             Assert.True(range.Match("fab"));
             Assert.True(range.Match("bcd"));
