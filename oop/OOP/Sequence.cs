@@ -9,11 +9,11 @@
         }
         public IMatch Match(string text)
         {
-            var matchPattern = new Match(true, text);
+            IMatch matchPattern = new Match(true, text);
 
             foreach (var pattern in patterns)
             {
-                matchPattern = (Match)pattern.Match(matchPattern.RemainingText());
+                matchPattern = pattern.Match(matchPattern.RemainingText());
                 if (!matchPattern.Success())
                     return new Match(false, text);
             }

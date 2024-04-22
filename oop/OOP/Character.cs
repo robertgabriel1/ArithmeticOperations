@@ -2,19 +2,19 @@
 {
     public class Character : IPattern
     {
-        readonly char pattern;
+        private readonly char pattern;
 
         public Character(char pattern)
         {
             this.pattern = pattern;
         }
 
-        public bool Match(string text)
+        public IMatch Match(string text)
         {
-            if (string.IsNullOrEmpty(text))
-                return false;
+            if (string.IsNullOrEmpty(text) || pattern != text[0])
+                return new Match(false, text);
 
-            return text[0] == pattern;
+            return new Match(true, text[1..]);
         }
     }
 }

@@ -8,17 +8,18 @@
             this.patterns = patterns;
         }
 
-        public bool Match(string text)
+        public IMatch Match(string text)
         {
             foreach (var pattern in patterns)
             {
-                if (pattern.Match(text))
+                var matchPattern = pattern.Match(text);
+                if (matchPattern.Success())
                 {
-                    return true;
+                    return matchPattern;
                 }
             }
 
-            return false;
+            return new Match(false, text);
         }
     }
 }

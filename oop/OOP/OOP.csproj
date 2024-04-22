@@ -6,4 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<CodeAnalysisRuleSet>juniormind.ruleset</CodeAnalysisRuleSet>
+	</PropertyGroup>
 </Project>

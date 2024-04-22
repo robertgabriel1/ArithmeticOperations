@@ -4,30 +4,37 @@ namespace OOPTests
 {
     public class SequenceFacts
     {
-        [Fact]
-        public void Match_TestAllSituations()
+        [Theory]
+        [InlineData("abcd", true)]
+        [InlineData("ax", false)]
+        [InlineData("def", false)]
+        [InlineData("", false)]
+        [InlineData(null, false)]
+        public void Match_Should_ReturnExpected(string? value, bool expectedResult)
         {
             var ab = new Sequence(
             new Character('a'),
             new Character('b')
             );
 
-            Assert.True(ab.Match("abcd").Success());
-            Assert.False(ab.Match("ax").Success());
-            Assert.False(ab.Match("def").Success());
-            Assert.False(ab.Match("").Success());
-            Assert.False(ab.Match(null).Success());
+            Assert.Equal(expectedResult, ab.Match(value).Success());
 
             var abc = new Sequence(
             ab,
             new Character('c')
             );
-            Assert.True(abc.Match("abcd").Success());
-            Assert.False(abc.Match("def").Success());
-            Assert.False(abc.Match("abx").Success());
-            Assert.False(abc.Match("").Success());
-            Assert.False(abc.Match(null).Success());
 
+            Assert.Equal(expectedResult, abc.Match(value).Success());
+        }
+
+        [Theory]
+        [InlineData("u1234", true)]
+        [InlineData("uabcdef", true)]
+        [InlineData("uB005 ab", true)]
+        [InlineData("abc", false)]
+        [InlineData(null, false)]
+        public void Match_Should_ReturnExpected_ForHex(string? value, bool expectedResult)
+        {
             var hex = new Choice(
             new OOP.Range('0', '9'),
             new OOP.Range('a', 'f'),
@@ -44,11 +51,7 @@ namespace OOPTests
             )
             );
 
-            Assert.True(hexSeq.Match("u1234").Success());
-            Assert.True(hexSeq.Match("uabcdef").Success());
-            Assert.True(hexSeq.Match("uB005 ab").Success());
-            Assert.False(hexSeq.Match("abc").Success());
-            Assert.False(hexSeq.Match(null).Success());
+            Assert.Equal(expectedResult, hexSeq.Match(value).Success());
         }
     }
 }
