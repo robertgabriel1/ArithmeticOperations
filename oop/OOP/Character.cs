@@ -11,10 +11,9 @@
 
         public IMatch Match(string text)
         {
-            if (string.IsNullOrEmpty(text) || pattern != text[0])
-                return new Match(false, text);
-
-            return new Match(true, text[1..]);
+            return string.IsNullOrEmpty(text) || pattern != text[0] 
+            ? new Match(false, text)
+            : new Match(true, text[1..]);
         }
     }
 }
