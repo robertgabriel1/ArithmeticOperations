@@ -15,7 +15,9 @@
             {
                 matchPattern = pattern.Match(matchPattern.RemainingText());
                 if (!matchPattern.Success())
+                {
                     return new Match(false, text);
+                }
             }
 
             return matchPattern;
