@@ -1,12 +1,12 @@
 ﻿namespace OOP
 {
-    public class List : IPattern
+    public class StringClass : IPattern
     {
         private readonly IPattern pattern;
 
-        public List(IPattern element, IPattern separator)
+        public StringClass()
         {
-            pattern = new Many(new Sequence(element, new Many(new Sequence(separator, element))));
+            pattern = new Range('a','f');
         }
 
         public IMatch Match(string text)
