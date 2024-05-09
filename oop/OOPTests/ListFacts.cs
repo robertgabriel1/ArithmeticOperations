@@ -20,11 +20,16 @@ namespace OOPTests
             Assert.True(a.Match("1,2,3,").Success());
             Assert.Equal(",", a.Match("1,2,3,").RemainingText());
 
+            Assert.True(a.Match("").Success());
+            Assert.Equal(",", a.Match("1,2,3,").RemainingText());
+
             Assert.True(a.Match("1a").Success());
             Assert.Equal("a", a.Match("1a").RemainingText());
 
-            Assert.True(a.Match("1,,3").Success());
-            Assert.Equal(",3", a.Match("1,,3").RemainingText());
+            Assert.True(a.Match("1,2,3!").Success());
+            Assert.Equal("!", a.Match("1,2,3!").RemainingText());
+
+            Assert.Equal(",2", a.Match("1,,2").RemainingText());
         }
 
 
