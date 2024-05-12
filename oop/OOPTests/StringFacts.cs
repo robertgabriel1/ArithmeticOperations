@@ -52,7 +52,7 @@ namespace OOPTests
             StringClass text = new StringClass();
             Assert.False(text.Match(Quoted("a\nb\rc")).Success());
         }
-
+        
         [Fact]
         public void CanContainLargeUnicodeCharacters()
         {

@@ -6,19 +6,16 @@
 
         public Number()
         {
-            var digit = new Range('0', '9');
-            var digits = new OneOrMore(digit);
+            var digits = new OneOrMore(new Range('0', '9'));
             var signs = new Any("-+");
             var exponentSign = new Any("Ee");
             var dot = new Character('.');
             var negativeChar = new Character('-');
-            var onlyZeroAsInteger = new Sequence(new Optional(negativeChar), new Character('0')); 
-            var multiNumberInteger = new Sequence(new Optional(negativeChar), new Range('1', '9'), new Many(digit));
-            var checkValidExponent = new Sequence(exponentSign, new Optional(signs), digits);
-            var integerPart = new Choice(onlyZeroAsInteger, multiNumberInteger);
-            var fractionalPart = new Choice(new Sequence(dot, digits));
-            var exponentPart = new Choice(checkValidExponent);
-            pattern = new Sequence(integerPart, new Optional(fractionalPart), new Optional(exponentPart));
+            var singleZero = new Character('0');
+            var integerPart = new Sequence(new Optional(negativeChar), new Choice(singleZero, digits));
+            var fractionalPart = new Optional(new Sequence(dot, digits));
+            var exponentPart = new Optional(new Sequence(exponentSign, new Optional(signs), digits));
+            pattern = new Sequence(integerPart, fractionalPart, exponentPart);
         }
 
         public IMatch Match(string text)
