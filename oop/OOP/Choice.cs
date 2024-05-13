@@ -2,7 +2,7 @@
 {
     public class Choice : IPattern
     {
-        private readonly IPattern[] patterns;
+        private IPattern[] patterns;
         public Choice(params IPattern[] patterns)
         {
             this.patterns = patterns;
@@ -20,6 +20,12 @@
             }
 
             return new Match(false, text);
+        }
+
+        public void Add(IPattern newPattern)
+        {
+            Array.Resize(ref patterns, patterns.Length + 1);
+            patterns[^1] = newPattern;
         }
     }
 }

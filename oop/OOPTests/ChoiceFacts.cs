@@ -99,5 +99,14 @@ namespace OOPTests
             Assert.False(hex.Match("").Success());
             Assert.False(hex.Match(null).Success());
         }
+
+        [Fact]
+        public void Add_ShouldAddNewPattern()
+        {
+            var value = new Choice(new OOP.Range('1','2'));
+            Assert.False(value.Match("3").Success());
+            value.Add(new OOP.Range('3', '4'));
+            Assert.True(value.Match("3").Success());
+        }
     }
 }
