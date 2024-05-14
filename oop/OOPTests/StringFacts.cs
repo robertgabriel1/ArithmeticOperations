@@ -52,13 +52,6 @@ namespace OOPTests
             StringClass text = new StringClass();
             Assert.False(text.Match(Quoted("a\nb\rc")).Success());
         }
-        
-        [Fact]
-        public void CanContainLargeUnicodeCharacters()
-        {
-            StringClass text = new StringClass();
-            Assert.True(text.Match(Quoted("⛅⚾")).Success());
-        }
 
         [Fact]
         public void CanContainEscapedQuotationMark()

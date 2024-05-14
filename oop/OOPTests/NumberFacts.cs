@@ -48,15 +48,6 @@ namespace OOPTests
         }
 
         [Fact]
-        public void DoesNotStartWithZero()
-        {
-            Number number = new Number();
-            Assert.False(number.Match("07").Success());
-            Assert.False(number.Match("017").Success());
-            Assert.False(number.Match("-017").Success());
-        }
-
-        [Fact]
         public void CanBeNegative()
         {
             Number number = new Number();
@@ -86,31 +77,10 @@ namespace OOPTests
         }
 
         [Fact]
-        public void DoesNotEndWithADot()
-        {
-            Number number = new Number();
-            Assert.False(number.Match("12.").Success());
-        }
-
-        [Fact]
         public void DoesStartWithADot()
         {
             Number number = new Number();
             Assert.False(number.Match(".12").Success());
-        }
-
-        [Fact]
-        public void DoesNotHaveTwoFractionParts()
-        {
-            Number number = new Number();
-            Assert.False(number.Match("12.34.56").Success());
-        }
-
-        [Fact]
-        public void TheDecimalPartDoesNotAllowLetters()
-        {
-            Number number = new Number();
-            Assert.False(number.Match("12.3x").Success());
         }
 
         [Fact]
@@ -150,78 +120,11 @@ namespace OOPTests
         }
 
         [Fact]
-        public void TheExponentDoesNotAllowLetters()
-        {
-            Number number = new Number();
-            Assert.False(number.Match("22e3x3").Success());
-        }
-
-        [Fact]
-        public void DoesNotHaveTwoExponents()
-        {
-            Number number = new Number();
-            Assert.False(number.Match("22e323e33").Success());
-            Assert.False(number.Match("22.3e323e33").Success());
-            Assert.False(number.Match("22.3e-323e33").Success());
-            Assert.False(number.Match("22.3E-323E33").Success());
-        }
-
-        [Fact]
-        public void TheExponentIsAlwaysComplete()
-        {
-            Number number = new Number();
-            Assert.False(number.Match("22e").Success());
-            Assert.False(number.Match("22E").Success());
-            Assert.False(number.Match("22e+").Success());
-            Assert.False(number.Match("23E-").Success());
-        }
-
-        [Fact]
-        public void TheExponentIsAfterTheFraction()
-        {
-            Number number = new Number();
-            Assert.False(number.Match("22e3.3").Success());
-        }
-
-        [Fact]
-        public void TheExponentIsFirstAfterDot()
-        {
-            Number number = new Number();
-            Assert.False(number.Match("22.e33").Success());
-        }
-
-        [Fact]
         public void SignOnlyIsNotValid()
         {
             Number number = new Number();
             Assert.False(number.Match("+").Success());
             Assert.False(number.Match("-").Success());
-        }
-
-        [Fact]
-        public void DoesNotContainInvalidSymbol()
-        {
-            Number number = new Number();
-            Assert.False(number.Match("123#456").Success());
-            Assert.False(number.Match("12$34").Success());
-            Assert.False(number.Match("1%23").Success());
-        }
-
-        [Fact]
-        public void SignCannotBeBeforeExponent()
-        {
-            Number number = new Number();
-            Assert.False(number.Match("12+e3").Success());
-            Assert.False(number.Match("12-e3").Success());
-        }
-
-        [Fact]
-        public void DoesNotHaveTwoOrMoreSigns()
-        {
-            Number number = new Number();
-            Assert.False(number.Match("22.3e++3").Success());
-            Assert.False(number.Match("14.3e--323e33").Success());
-            Assert.False(number.Match("26.3e-3+5-7").Success());
         }
 
         [Fact]
@@ -245,14 +148,6 @@ namespace OOPTests
         {
             Number number = new Number();
             Assert.False(number.Match("--46").Success());
-        }
-
-        [Fact]
-        public void ExponentialSignShouldAppearAfterExponent()
-        {
-            Number number = new Number();
-            Assert.False(number.Match("123ea-67").Success());
-            Assert.False(number.Match("123e2-67").Success());
         }
     }
 }

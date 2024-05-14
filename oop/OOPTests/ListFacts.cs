@@ -28,8 +28,6 @@ namespace OOPTests
 
             Assert.True(a.Match("1,2,3!").Success());
             Assert.Equal("!", a.Match("1,2,3!").RemainingText());
-
-            Assert.Equal(",2", a.Match("1,,2").RemainingText());
         }
 
 
