@@ -18,6 +18,13 @@
             var listOfElements = new List(valueFormat, separator);
             var array = new Sequence(openSquareBracket, listOfElements, closeSquareBracket);
             value.Add(array);
+            var openCurlyBrace = new Character('{');
+            var closeCurlyBrace = new Character('}');
+            var colon = new Character(':');
+            var member = new Sequence(whitespaces, stringObject, whitespaces, colon, value);
+            var listOfObjects = new List(member, separator);
+            var obj = new Sequence(openCurlyBrace, whitespaces, listOfObjects, closeCurlyBrace);
+            value.Add(obj);
             pattern = value;
         }
 
