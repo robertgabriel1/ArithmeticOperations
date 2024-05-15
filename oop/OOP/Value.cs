@@ -9,21 +9,21 @@
             var stringObject = new StringClass();
             var number = new Number();
             var whitespaces = new Many(new Any("\n\r\t "));
-            var separator = new Character(',');
-            var value = new Choice(stringObject, number, new Text("true"),
-            new Text("false"), new Text("null"));
+            var separator = new Sequence(whitespaces, new Character(','), whitespaces);
+            var value = new Choice(
+                        stringObject,
+                        number,
+                        new Text("true"),
+                        new Text("false"),
+                        new Text("null"));
             var valueFormat = new Sequence(whitespaces, value, whitespaces);
-            var openSquareBracket = new Character('[');
-            var closeSquareBracket = new Character(']');
             var listOfElements = new List(valueFormat, separator);
-            var array = new Sequence(openSquareBracket, listOfElements, closeSquareBracket);
+            var array = new Sequence(new Character('['), listOfElements, new Character(']'));
             value.Add(array);
-            var openCurlyBrace = new Character('{');
-            var closeCurlyBrace = new Character('}');
             var colon = new Character(':');
             var member = new Sequence(whitespaces, stringObject, whitespaces, colon, value);
             var listOfObjects = new List(member, separator);
-            var obj = new Sequence(openCurlyBrace, whitespaces, listOfObjects, closeCurlyBrace);
+            var obj = new Sequence(new Character('{'), whitespaces, listOfObjects, new Character('}'));
             value.Add(obj);
             pattern = value;
         }
