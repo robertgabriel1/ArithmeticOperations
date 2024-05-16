@@ -21,7 +21,7 @@
             var array = new Sequence(new Character('['), listOfElements, new Character(']'));
             value.Add(array);
             var colon = new Character(':');
-            var member = new Sequence(whitespaces, stringObject, whitespaces, colon, value);
+            var member = new Sequence(whitespaces, stringObject, whitespaces, colon, valueFormat);
             var listOfObjects = new List(member, separator);
             var obj = new Sequence(new Character('{'), whitespaces, listOfObjects, new Character('}'));
             value.Add(obj);
