@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using OOP;
-using System;
+﻿using OOP;
 
 namespace OOPTests
 {

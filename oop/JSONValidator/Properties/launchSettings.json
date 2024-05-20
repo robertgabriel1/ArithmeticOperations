@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "JSONValidator": {
+      "commandName": "Project",
+      "commandLineArgs": "D:\\bgm\\arithmetic\\OOP\\JSONValidator\\JSONText.txt,D:\\bgm\\arithmetic\\OOP\\JSONValidator\\LongJSON.txt "
+    }
+  }
+}

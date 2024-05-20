@@ -8,22 +8,20 @@
         {
             var stringObject = new StringClass();
             var number = new Number();
-            var whitespaces = new Many(new Any("\n\r\t "));
-            var separator = new Sequence(whitespaces, new Character(','), whitespaces);
+            var whitespace = new Many(new Any("\n\r\t "));
             var value = new Choice(
                         stringObject,
                         number,
                         new Text("true"),
                         new Text("false"),
                         new Text("null"));
-            var valueFormat = new Sequence(whitespaces, value, whitespaces);
-            var listOfElements = new List(valueFormat, separator);
-            var array = new Sequence(new Character('['), listOfElements, new Character(']'));
+            var element = new Sequence(whitespace, value, whitespace);
+            var elements = new List(element, new Character(','));
+            var array = new Sequence(new Character('['), whitespace, elements, whitespace, new Character(']'));
             value.Add(array);
-            var colon = new Character(':');
-            var member = new Sequence(whitespaces, stringObject, whitespaces, colon, valueFormat);
-            var listOfObjects = new List(member, separator);
-            var obj = new Sequence(new Character('{'), whitespaces, listOfObjects, new Character('}'));
+            var member = new Sequence(whitespace, stringObject, whitespace, new Character(':'), element);
+            var members = new List(member, new Character(','));
+            var obj = new Sequence(new Character('{'), whitespace, members, whitespace, new Character('}'));
             value.Add(obj);
             pattern = value;
         }

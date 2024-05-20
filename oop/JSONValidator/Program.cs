@@ -6,8 +6,13 @@ namespace JSONValidator
     {
         static void Main(string[] args)
         {
-            string file = @"D:\bgm\arithmetic\OOP\JSONValidator\JSONText.txt";
-            string text = File.ReadAllText(file);
+            if (args.Length == 0)
+            {
+                Console.WriteLine("No JSON found");
+                return;
+            }
+
+            string text = File.ReadAllText(args[0]);
             var value = new Value();
             var json = value.Match(text);
             Console.WriteLine(json.Success() && json.RemainingText() == "" ? "Valid JSON format" : "Invalid JSON format");
