@@ -9,10 +9,10 @@
             this.pattern = pattern;
         }
 
-        public IMatch Match(string text)
+        public IMatch Match(StringView text)
         {
-            return !string.IsNullOrEmpty(text) && pattern == text[0] 
-            ? new Match(true, text[1..])
+            return !text.IsEmpty() && pattern == text.Peek() 
+            ? new Match(true, text.Advance())
             : new Match(false, text);
         }
     }

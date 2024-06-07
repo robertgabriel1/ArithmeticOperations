@@ -3,6 +3,6 @@
     public interface IMatch
     {
         bool Success();
-        string RemainingText();
+        StringView RemainingText();
     }
 }

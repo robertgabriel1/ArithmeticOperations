@@ -3,14 +3,14 @@
     public class Match : IMatch
     {
         private readonly bool success;
-        private readonly string remainingText;
-        public Match(bool succes, string remainingText)
+        private readonly StringView remainingText;
+        public Match(bool succes, StringView remainingText)
         {
             this.success = succes;
             this.remainingText = remainingText;
         }
 
-        public string RemainingText()
+        public StringView RemainingText()
         {
             return remainingText;
         }

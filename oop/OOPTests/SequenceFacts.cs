@@ -17,14 +17,14 @@ namespace OOPTests
             new Character('b')
             );
 
-            Assert.Equal(expectedResult, ab.Match(value).Success());
+            Assert.Equal(expectedResult, ab.Match(new StringView(value, 0)).Success());
 
             var abc = new Sequence(
             ab,
             new Character('c')
             );
 
-            Assert.Equal(expectedResult, abc.Match(value).Success());
+            Assert.Equal(expectedResult, abc.Match(new StringView(value, 0)).Success());
         }
 
         [Theory]
@@ -51,7 +51,7 @@ namespace OOPTests
             )
             );
 
-            Assert.Equal(expectedResult, hexSeq.Match(value).Success());
+            Assert.Equal(expectedResult, hexSeq.Match(new StringView(value, 0)).Success());
         }
     }
 }

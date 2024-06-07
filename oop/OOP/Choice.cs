@@ -8,7 +8,7 @@
             this.patterns = patterns;
         }
 
-        public IMatch Match(string text)
+        public IMatch Match(StringView text)
         {
             foreach (var pattern in patterns)
             {

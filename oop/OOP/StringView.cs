@@ -13,7 +13,7 @@
 
         public char Peek()
         {
-            return !IsEmpty() ? text[index] : '0';
+            return text[index];
         }
 
         public bool IsEmpty()
@@ -33,15 +33,7 @@
                 return false;
             }
 
-            for (int i = 0; i < prefix.Length; i++)
-            {
-                if (prefix[i] != text[index + i])
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return string.Compare(text, 0, prefix, 0, prefix.Length) == 0;
         }
     }
 }

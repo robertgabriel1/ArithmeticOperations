@@ -8,7 +8,7 @@
             this.pattern = pattern;
         }
 
-        public IMatch Match(string text)
+        public IMatch Match(StringView text)
         {
             var match = pattern.Match(text);
             while (match.Success())

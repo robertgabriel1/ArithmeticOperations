@@ -12,13 +12,6 @@ namespace OOPTests
         }
 
         [Fact]
-        public void Peek_ShouldReturnZero_WhenStringIsEmpty()
-        {
-            var stringView = new StringView("", 0);
-            Assert.Equal('0', stringView.Peek());
-        }
-
-        [Fact]
         public void IsEmpty_ShouldReturnTrue_WhenStringIsEmpty()
         {
             var stringView = new StringView("", 0);

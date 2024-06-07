@@ -18,7 +18,7 @@
             pattern = new Sequence(integerPart, fractionalPart, exponentPart);
         }
 
-        public IMatch Match(string text)
+        public IMatch Match(StringView text)
         {
             return pattern.Match(text);
         }

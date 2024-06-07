@@ -8,11 +8,11 @@
             this.accepted = accepted;
         }
 
-        public IMatch Match(string text)
+        public IMatch Match(StringView text)
         {
-            return !string.IsNullOrEmpty(text) && accepted.Contains(text[0])
-            ? new Match(true, text[1..])
-            : new Match(false, text);
+            return text.IsEmpty() || !accepted.Contains(text.Peek())
+            ? new Match(false, text)
+            : new Match(true, text.Advance());
         }
     }
 }

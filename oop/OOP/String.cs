@@ -15,7 +15,7 @@
             pattern = new Sequence(quote, new Many(characters), quote);
         }
 
-        public IMatch Match(string text)
+        public IMatch Match(StringView text)
         {
             return pattern.Match(text);
         }

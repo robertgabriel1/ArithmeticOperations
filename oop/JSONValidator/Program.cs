@@ -13,9 +13,10 @@ namespace JSONValidator
             }
 
             string text = File.ReadAllText(args[0]);
+            StringView stringText = new StringView(text, 0);
             var value = new Value();
-            var json = value.Match(text);
-            Console.WriteLine(json.Success() && json.RemainingText() == "" ? "Valid JSON format" : "Invalid JSON format");
+            var json = value.Match(stringText);
+            Console.WriteLine(json.Success() && json.RemainingText() == new StringView("", 0) ? "Valid JSON format" : "Invalid JSON format");
         }
     }
 }

@@ -11,9 +11,9 @@ namespace OOPTests
             new OOP.Range('1', '9')
             );
 
-            Assert.True(digit.Match("012").Success());
-            Assert.True(digit.Match("12").Success());
-            Assert.True(digit.Match("92").Success());
+            Assert.True(digit.Match(new StringView("012", 0)).Success());
+            Assert.True(digit.Match(new StringView("12", 0)).Success());
+            Assert.True(digit.Match(new StringView("92", 0)).Success());
         }
 
         [Fact]
@@ -23,7 +23,7 @@ namespace OOPTests
             new Character('0'),
             new OOP.Range('1', '9')
             );
-            Assert.False(digit.Match("a9").Success());
+            Assert.False(digit.Match(new StringView("a9", 0)).Success());
         }
 
         [Fact]
@@ -33,8 +33,8 @@ namespace OOPTests
             new Character('0'),
             new OOP.Range('1', '9')
             );
-            Assert.False(digit.Match("").Success());
-            Assert.False(digit.Match(null).Success());
+            Assert.False(digit.Match(new StringView("", 0)).Success());
+            Assert.False(digit.Match(new StringView(null, 0)).Success());
         }
 
         [Fact]
@@ -53,13 +53,13 @@ namespace OOPTests
                 )
             );
 
-            Assert.True(hex.Match("012").Success());
-            Assert.True(hex.Match("12").Success());
-            Assert.True(hex.Match("92").Success());
-            Assert.True(hex.Match("a9").Success());
-            Assert.True(hex.Match("f8").Success());
-            Assert.True(hex.Match("A9").Success());
-            Assert.True(hex.Match("F8").Success());
+            Assert.True(hex.Match(new StringView("012", 0)).Success());
+            Assert.True(hex.Match(new StringView("12", 0)).Success());
+            Assert.True(hex.Match(new StringView("92", 0)).Success());
+            Assert.True(hex.Match(new StringView("a9", 0)).Success());
+            Assert.True(hex.Match(new StringView("f8", 0)).Success());
+            Assert.True(hex.Match(new StringView("A9", 0)).Success());
+            Assert.True(hex.Match(new StringView("F8", 0)).Success());
         }
 
         [Fact]
@@ -77,8 +77,8 @@ namespace OOPTests
                     new OOP.Range('A', 'F')
                 )
             );
-            Assert.False(hex.Match("g8").Success());
-            Assert.False(hex.Match("G8").Success());
+            Assert.False(hex.Match(new StringView("g8", 0)).Success());
+            Assert.False(hex.Match(new StringView("G8", 0)).Success());
         }
 
         [Fact]
@@ -96,17 +96,17 @@ namespace OOPTests
                     new OOP.Range('A', 'F')
                 )
             );
-            Assert.False(hex.Match("").Success());
-            Assert.False(hex.Match(null).Success());
+            Assert.False(hex.Match(new StringView("", 0)).Success());
+            Assert.False(hex.Match(new StringView(null, 0)).Success());
         }
 
         [Fact]
         public void Add_ShouldAddNewPattern()
         {
             var value = new Choice(new OOP.Range('1','2'));
-            Assert.False(value.Match("3").Success());
+            Assert.False(value.Match(new StringView("3", 0)).Success());
             value.Add(new OOP.Range('3', '4'));
-            Assert.True(value.Match("3").Success());
+            Assert.True(value.Match(new StringView("3", 0)).Success());
         }
     }
 }

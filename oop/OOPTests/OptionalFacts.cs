@@ -8,51 +8,51 @@ namespace OOPTests
         public void Match_Should_RemoveSimilarPattern_WhenTextStartsWithPattern()
         {
             var a = new Optional(new Character('a'));
-            Assert.True(a.Match("abc").Success());
-            Assert.True(a.Match("asdfg").Success());
-            Assert.Equal("bc", a.Match("abc").RemainingText());
+            Assert.True(a.Match(new StringView("abc", 0)).Success());
+            Assert.True(a.Match(new StringView("asdfg", 0)).Success());
+            Assert.Equal(new StringView("bc", 0), a.Match(new StringView("abc", 0)).RemainingText());
         }
 
         [Fact]
         public void Match_Should_RemoveSimilarPattern_WhenAreSeveralMatches()
         {
             var a = new Optional(new Character('a'));
-            Assert.True(a.Match("aabc").Success());
-            Assert.Equal("abc", a.Match("aabc").RemainingText());
+            Assert.True(a.Match(new StringView("aabc", 0)).Success());
+            Assert.Equal(new StringView("abc", 0), a.Match(new StringView("aabc", 0)).RemainingText());
         }
 
         [Fact]
         public void Match_Should_RemainTheSame_WhenThereIsNoMatch()
         {
             var a = new Optional(new Character('a'));
-            Assert.True(a.Match("bc").Success());
-            Assert.Equal("bc", a.Match("bc").RemainingText());
+            Assert.True(a.Match(new StringView("bc", 0)).Success());
+            Assert.Equal(new StringView("bc", 0), a.Match(new StringView("bc", 0)).RemainingText());
         }
 
         [Fact]
         public void Match_Should_ReturnTrue_WhenIsEmptyOrNull()
         {
             var a = new Optional(new Character('a'));
-            Assert.True(a.Match("").Success()); 
-            Assert.True(a.Match(null).Success());
+            Assert.True(a.Match(new StringView("", 0)).Success()); 
+            Assert.True(a.Match(new StringView(null, 0)).Success());
         }
 
         [Fact]
         public void Match_Should_RemoveSimilarPattern_OtherThanLetters()
         {
             var sign = new Optional(new Character('-'));
-            Assert.True(sign.Match("123").Success());
-            Assert.True(sign.Match("-123").Success());
+            Assert.True(sign.Match(new StringView("123", 0)).Success());
+            Assert.True(sign.Match(new StringView("-123", 0)).Success());
         }
 
         [Fact]
         public void Match_Should_RemoveSimilarPattern_UsingARange()
         {
             var sign = new Optional(new OOP.Range('a', 'c'));
-            Assert.True(sign.Match("bcd").Success());
-            Assert.Equal("cd", sign.Match("bcd").RemainingText());
-            Assert.True(sign.Match("-123").Success());
-            Assert.Equal("-123", sign.Match("-123").RemainingText());
+            Assert.True(sign.Match(new StringView("bcd", 0)).Success());
+            Assert.Equal(new StringView("cd", 0), sign.Match(new StringView("bcd", 0)).RemainingText());
+            Assert.True(sign.Match(new StringView("-123", 0)).Success());
+            Assert.Equal(new StringView("-123", 0), sign.Match(new StringView("-123", 0)).RemainingText());
         }
     }
 }
