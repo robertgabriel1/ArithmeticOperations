@@ -35,5 +35,10 @@
 
             return string.Compare(text, 0, prefix, 0, prefix.Length) == 0;
         }
+
+        public bool CheckRemainingString(StringView newString)
+        {
+            return text == newString.text;
+        }
     }
 }

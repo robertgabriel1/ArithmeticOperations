@@ -10,7 +10,7 @@ namespace OOPTests
             var a = new Optional(new Character('a'));
             Assert.True(a.Match(new StringView("abc", 0)).Success());
             Assert.True(a.Match(new StringView("asdfg", 0)).Success());
-            Assert.Equal(new StringView("bc", 0), a.Match(new StringView("abc", 0)).RemainingText());
+            Assert.True(new StringView("abc", 3).CheckRemainingString(a.Match(new StringView("abc", 0)).RemainingText()));
         }
 
         [Fact]
@@ -18,7 +18,7 @@ namespace OOPTests
         {
             var a = new Optional(new Character('a'));
             Assert.True(a.Match(new StringView("aabc", 0)).Success());
-            Assert.Equal(new StringView("abc", 0), a.Match(new StringView("aabc", 0)).RemainingText());
+            Assert.True(new StringView("aabc", 4).CheckRemainingString(a.Match(new StringView("aabc", 0)).RemainingText()));
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace OOPTests
         {
             var a = new Optional(new Character('a'));
             Assert.True(a.Match(new StringView("bc", 0)).Success());
-            Assert.Equal(new StringView("bc", 0), a.Match(new StringView("bc", 0)).RemainingText());
+            Assert.True(new StringView("bc", 2).CheckRemainingString(a.Match(new StringView("bc", 0)).RemainingText()));
         }
 
         [Fact]
@@ -50,9 +50,9 @@ namespace OOPTests
         {
             var sign = new Optional(new OOP.Range('a', 'c'));
             Assert.True(sign.Match(new StringView("bcd", 0)).Success());
-            Assert.Equal(new StringView("cd", 0), sign.Match(new StringView("bcd", 0)).RemainingText());
+            Assert.True(new StringView("bcd", 3).CheckRemainingString(sign.Match(new StringView("bcd", 0)).RemainingText()));
             Assert.True(sign.Match(new StringView("-123", 0)).Success());
-            Assert.Equal(new StringView("-123", 0), sign.Match(new StringView("-123", 0)).RemainingText());
+            Assert.True(new StringView("-123", 4).CheckRemainingString(sign.Match(new StringView("-123", 0)).RemainingText()));
         }
     }
 }
