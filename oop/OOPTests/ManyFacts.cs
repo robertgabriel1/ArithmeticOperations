@@ -10,8 +10,8 @@ namespace OOPTests
             var a = new Many(new Character('a'));
             Assert.True(a.Match(new StringView("abc", 0)).Success());
             Assert.True(a.Match(new StringView("aaaabc", 0)).Success());
-            Assert.True(new StringView("abc", 3).CheckRemainingString(a.Match(new StringView("abc", 0)).RemainingText()));
-            Assert.True(new StringView("aaaabc", 6).CheckRemainingString(a.Match(new StringView("aaaabc", 0)).RemainingText()));
+            Assert.True(a.Match(new StringView("abc", 0)).RemainingText().StartsWith("bc"));
+            Assert.True(a.Match(new StringView("aaaabc", 0)).RemainingText().StartsWith("bc"));
         }
 
         [Fact]
@@ -19,7 +19,7 @@ namespace OOPTests
         {
             var a = new Many(new Character('a'));
             Assert.True(a.Match(new StringView("bac", 0)).Success());
-            Assert.True(new StringView("bac", 3).CheckRemainingString(a.Match(new StringView("bac", 0)).RemainingText()));
+            Assert.True(a.Match(new StringView("bac", 0)).RemainingText().StartsWith("bac"));
         }
 
         [Fact]
@@ -27,7 +27,7 @@ namespace OOPTests
         {
             var a = new Many(new Character('a'));
             Assert.True(a.Match(new StringView("bc", 0)).Success());
-            Assert.True(new StringView("bc", 2).CheckRemainingString(a.Match(new StringView("bc", 0)).RemainingText()));
+            Assert.True(a.Match(new StringView("bc", 0)).RemainingText().StartsWith("bc"));
         }
 
         [Fact]
@@ -36,8 +36,8 @@ namespace OOPTests
             var a = new Many(new Character('a'));
             Assert.True(a.Match(new StringView("", 0)).Success());
             Assert.True(a.Match(new StringView(null, 0)).Success());
-            Assert.True(new StringView("", 0).CheckRemainingString(a.Match(new StringView("", 0)).RemainingText()));
-            Assert.True(new StringView(null, 0).CheckRemainingString(a.Match(new StringView(null, 0)).RemainingText()));
+            Assert.True(a.Match(new StringView("", 0)).RemainingText().StartsWith(""));
+            Assert.True(a.Match(new StringView(null, 0)).RemainingText().StartsWith(null));
         }
 
         [Fact]
@@ -45,7 +45,7 @@ namespace OOPTests
         {
             var digits = new Many(new OOP.Range('0', '9'));
             Assert.True(digits.Match(new StringView("12345ab123", 0)).Success());
-            Assert.True(new StringView("12345ab123", 10).CheckRemainingString(digits.Match(new StringView("12345ab123", 0)).RemainingText()));
+            Assert.True(digits.Match(new StringView("12345ab123", 0)).RemainingText().StartsWith("ab123"));
         }
 
         [Fact]
@@ -53,7 +53,7 @@ namespace OOPTests
         {
             var digits = new Many(new OOP.Range('0', '9'));
             Assert.True(digits.Match(new StringView("ab", 0)).Success());
-            Assert.True(new StringView("ab", 2).CheckRemainingString(digits.Match(new StringView("ab", 0)).RemainingText()));
+            Assert.True(digits.Match(new StringView("ab", 0)).RemainingText().StartsWith("ab"));
         }
     }
 }

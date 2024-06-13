@@ -28,17 +28,17 @@
 
         public bool StartsWith(string prefix)
         {
-            if (prefix.Length > text.Length)
+            if (prefix == null)
+            {
+                return text == null;
+            }
+
+            if (prefix.Length > text.Length - index)
             {
                 return false;
             }
 
-            return string.Compare(text, 0, prefix, 0, prefix.Length) == 0;
-        }
-
-        public bool CheckRemainingString(StringView newString)
-        {
-            return text == newString.text;
+            return string.Compare(text, index, prefix, 0, prefix.Length) == 0;
         }
     }
 }

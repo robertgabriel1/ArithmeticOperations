@@ -9,8 +9,8 @@ namespace OOPTests
         public void Match_Should_ReturnEmptyString_WhenEveryThingMatch()
         {
             var a = new List(new OOP.Range('0', '9'), new Character(','));
-            Assert.True(a.Match(new StringView("1,2,3", 0)).Success());
-            Assert.True(new StringView("1,2,3", 5).CheckRemainingString(a.Match(new StringView("1,2,3", 0)).RemainingText()));
+            Assert.True(a.Match(new StringView("1,2,3", 5)).Success());
+            Assert.True(a.Match(new StringView("1,2,3", 0)).RemainingText().StartsWith(""));
         }
 
         [Fact]
@@ -18,22 +18,21 @@ namespace OOPTests
         {
             var a = new List(new OOP.Range('0', '9'), new Character(','));
             Assert.True(a.Match(new StringView("1,2,3,", 0)).Success());
-            Assert.True(new StringView("1,2,3,", 5).CheckRemainingString(a.Match(new StringView("1,2,3,", 0)).RemainingText()));
+            Assert.True(a.Match(new StringView("1,2,3,", 0)).RemainingText().StartsWith(","));
 
             Assert.True(a.Match(new StringView("1a", 0)).Success());
-            Assert.True(new StringView("1a", 1).CheckRemainingString(a.Match(new StringView("1a", 0)).RemainingText()));
+            Assert.True(a.Match(new StringView("1a", 0)).RemainingText().StartsWith("a"));
 
             Assert.True(a.Match(new StringView("1,2,3!", 0)).Success());
-            Assert.True(new StringView("1,2,3!", 5).CheckRemainingString(a.Match(new StringView("1,2,3!", 0)).RemainingText()));
+            Assert.True(a.Match(new StringView("1,2,3!", 0)).RemainingText().StartsWith("!"));
         }
-
 
         [Fact]
         public void Match_Should_ReturnSameString_WhenNothingMatches()
         {
             var a = new List(new OOP.Range('0', '9'), new Character(','));
             Assert.True(a.Match(new StringView("abc", 0)).Success());
-            Assert.True(new StringView("abc", 3).CheckRemainingString(a.Match(new StringView("abc", 0)).RemainingText()));
+            Assert.True(a.Match(new StringView("abc", 0)).RemainingText().StartsWith("abc"));
         }
 
         [Fact]
@@ -41,7 +40,7 @@ namespace OOPTests
         {
             var a = new List(new OOP.Range('0', '9'), new Character(','));
             Assert.True(a.Match(new StringView(",1,2,3", 0)).Success());
-            Assert.True(new StringView(",1,2,3", 5).CheckRemainingString(a.Match(new StringView(",1,2,3", 0)).RemainingText()));
+            Assert.True(a.Match(new StringView(",1,2,3", 0)).RemainingText().StartsWith(",1,2,3"));
         }
 
         [Fact]
@@ -49,10 +48,10 @@ namespace OOPTests
         {
             var a = new List(new OOP.Range('0', '9'), new Character(','));
             Assert.True(a.Match(new StringView("", 0)).Success());
-            Assert.True(new StringView("", 0).CheckRemainingString(a.Match(new StringView("", 0)).RemainingText()));
+            Assert.True(a.Match(new StringView("", 0)).RemainingText().StartsWith(""));
 
             Assert.True(a.Match(new StringView(null, 0)).Success());
-            Assert.True(new StringView(null, 0).CheckRemainingString(a.Match(new StringView(null, 0)).RemainingText()));
+            Assert.True(a.Match(new StringView(null, 0)).RemainingText().StartsWith(null));
         }
 
 
@@ -68,13 +67,13 @@ namespace OOPTests
             string thirdTest = "abc";
 
             Assert.True(list.Match(new StringView(firstTest, 0)).Success());
-            Assert.True(new StringView(firstTest, firstTest.Length).CheckRemainingString(list.Match(new StringView(firstTest, 0)).RemainingText()));
+            Assert.True(list.Match(new StringView(firstTest, 0)).RemainingText().StartsWith(""));
 
             Assert.True(list.Match(new StringView("", 0)).Success());
-            Assert.True(new StringView(secondTest, secondTest.Length).CheckRemainingString(list.Match(new StringView(secondTest, 0)).RemainingText()));
+            Assert.True(list.Match(new StringView(secondTest, 0)).RemainingText().StartsWith(" \n;"));
 
             Assert.True(list.Match(new StringView("abc", 0)).Success());
-            Assert.True(new StringView(thirdTest, thirdTest.Length).CheckRemainingString(list.Match(new StringView(thirdTest, 0)).RemainingText()));
+            Assert.True(list.Match(new StringView(thirdTest, 0)).RemainingText().StartsWith("abc"));
         }
     }
 }

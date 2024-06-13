@@ -10,7 +10,7 @@ namespace OOPTests
             var a = new Optional(new Character('a'));
             Assert.True(a.Match(new StringView("abc", 0)).Success());
             Assert.True(a.Match(new StringView("asdfg", 0)).Success());
-            Assert.True(new StringView("abc", 3).CheckRemainingString(a.Match(new StringView("abc", 0)).RemainingText()));
+            Assert.True(a.Match(new StringView("abc", 0)).RemainingText().StartsWith("bc"));
         }
 
         [Fact]
@@ -18,7 +18,7 @@ namespace OOPTests
         {
             var a = new Optional(new Character('a'));
             Assert.True(a.Match(new StringView("aabc", 0)).Success());
-            Assert.True(new StringView("aabc", 4).CheckRemainingString(a.Match(new StringView("aabc", 0)).RemainingText()));
+            Assert.True(a.Match(new StringView("aabc", 0)).RemainingText().StartsWith("abc"));
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace OOPTests
         {
             var a = new Optional(new Character('a'));
             Assert.True(a.Match(new StringView("bc", 0)).Success());
-            Assert.True(new StringView("bc", 2).CheckRemainingString(a.Match(new StringView("bc", 0)).RemainingText()));
+            Assert.True(a.Match(new StringView("bc", 0)).RemainingText().StartsWith("bc"));
         }
 
         [Fact]
@@ -50,9 +50,9 @@ namespace OOPTests
         {
             var sign = new Optional(new OOP.Range('a', 'c'));
             Assert.True(sign.Match(new StringView("bcd", 0)).Success());
-            Assert.True(new StringView("bcd", 3).CheckRemainingString(sign.Match(new StringView("bcd", 0)).RemainingText()));
+            Assert.True(sign.Match(new StringView("bcd", 0)).RemainingText().StartsWith("cd"));
             Assert.True(sign.Match(new StringView("-123", 0)).Success());
-            Assert.True(new StringView("-123", 4).CheckRemainingString(sign.Match(new StringView("-123", 0)).RemainingText()));
+            Assert.True(sign.Match(new StringView("-123", 0)).RemainingText().StartsWith("-123"));
         }
     }
 }
