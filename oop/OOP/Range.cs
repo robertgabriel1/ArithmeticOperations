@@ -11,7 +11,7 @@
         }
         public IMatch Match(StringView text)
         {
-            return (text.IsEmpty() || text.Peek() < Start || text.Peek() > End) 
+            return (text.IsEmpty() || text.Peek() < Start || text.Peek() > End)
             ? new Match(false, text)
             : new Match(true, text.Advance());
         }

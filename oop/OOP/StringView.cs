@@ -12,7 +12,7 @@
         }
 
         public char Peek()
-        {
+        { 
             return text[index];
         }
 

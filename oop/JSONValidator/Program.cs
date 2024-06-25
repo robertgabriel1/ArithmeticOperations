@@ -16,7 +16,7 @@ namespace JSONValidator
             StringView stringText = new StringView(text, 0);
             var value = new Value();
             var json = value.Match(stringText);
-            Console.WriteLine(json.RemainingText().StartsWith("") ? "Valid JSON format" : "Invalid JSON format");
+            Console.WriteLine(json.RemainingText().IsEmpty() ? "Valid JSON format" : $"Invalid JSON format at element {json.RemainingText().Peek()}");
         }
     }
 }

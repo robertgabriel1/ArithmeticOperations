@@ -10,9 +10,9 @@
 
         public IMatch Match(StringView text)
         {
-            return text.IsEmpty() || !text.StartsWith(prefix)
-            ? new Match(false, text)
-            : new Match(true, text.Advance(prefix.Length));
+            return !text.IsEmpty() && text.StartsWith(prefix)
+            ? new Match(true, text.Advance(prefix.Length))
+            : new Match(false, text);
         }
     }
 }

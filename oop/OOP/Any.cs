@@ -10,9 +10,9 @@
 
         public IMatch Match(StringView text)
         {
-            return text.IsEmpty() || !accepted.Contains(text.Peek())
-            ? new Match(false, text)
-            : new Match(true, text.Advance());
+            return !text.IsEmpty() && accepted.Contains(text.Peek())
+            ? new Match(true, text.Advance()) :
+            new Match(false, text);
         }
     }
 }
